@@ -1,0 +1,7 @@
+{
+  "name": "roulete-wheel",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

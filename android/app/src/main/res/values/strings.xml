@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">roulette-wheel</string>
+    <string name="title_activity_main">roulette-wheel</string>
+    <string name="package_name">io.roulette.com</string>
+    <string name="custom_url_scheme">io.roulette.com</string>
+</resources>
