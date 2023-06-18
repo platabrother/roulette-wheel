@@ -8,6 +8,8 @@
 *.tmp.*
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
+package-lock.json
+/node_modules
 
 *.log
 log.txt
