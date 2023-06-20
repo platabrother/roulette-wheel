@@ -16,16 +16,16 @@ export class HomePage implements AfterViewInit {
   @ViewChild('plate') plate!: ElementRef;
   @ViewChild('ball') ball!: ElementRef;
 
-  spinButtonVisible!: boolean;
-  resetButtonVisible!: boolean;
-  maskText!: string;
-  resultNumber!: number;
-  resultColor!: string;
+  public spinButtonVisible!: boolean;
+  public resetButtonVisible!: boolean;
+  public maskText!: string;
+  public resultNumber!: number;
+  public resultColor!: string;
 
-  maskDefault = 'Númro ganador';
-  timer = 1000;
-  red = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
-  previousResults: any[] = [];
+  public maskDefault = 'Winner number';
+  public timer = 1000;
+  public red = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
+  public previousResults: any[] = [];
 
   public numbers: number[] = Array(37)
     .fill(0)
