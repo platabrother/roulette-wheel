@@ -1,54 +1,15 @@
 <div class="main">
-  <button
-    type="button"
-    class="btn"
-    #spin
-    (click)="spinHandler()"
-    [style.display]="spinButtonVisible ? 'block' : 'none'"
-  >
-    <span class="btn-label">Spin</span>
-  </button>
-  <button
-    type="button"
-    class="btn btn-reset"
-    #reset
-    (click)="resetHandler()"
-    [style.display]="resetButtonVisible ? 'block' : 'none'"
-  >
-    <span class="btn-label">New Game</span>
-  </button>
-  <div class="plate" #plate>
-    <div class="ball" #ball style="z-index: 10"></div>
-    <ul class="inner" #inner>
-      <li class="number" *ngFor="let num of numbers">
-        <label>
-          <input type="radio" name="pit" [value]="num" />
-          <span class="pit">{{ num }}</span>
-        </label>
-      </li>
-    </ul>
-    <div class="data" #data>
-      <div class="data-inner">
-        <div class="mask" #mask style="color: white">{{ maskText }}</div>
-        <div class="result">
-          <div class="result-number" style="color: white">
-            {{ resultNumber }}
-          </div>
-          <div class="result-color" style="color: white">{{ resultColor }}</div>
-        </div>
-      </div>
+  <div class="row">
+    <div class="col">
+      <app-plate #plate>
+        <app-ball #ball></app-ball>
+      </app-plate>
+    </div>
+    <div class="col">
+      <app-results></app-results>
     </div>
   </div>
-  <div class="previous-results">
-    <ol class="previous-list">
-      <li class="visuallyhidden placeholder">No results yet.</li>
-      <li
-        *ngFor="let result of previousResults"
-        class="previous-result color-{{ result.color }}"
-      >
-        <span class="previous-number">{{ result.number }}</span>
-        <span class="previous-color">{{ result.color }}</span>
-      </li>
-    </ol>
+  <div class="w-100 text-center">
+    <button class="btn btn-success" (click)="onPlay()">PLAY</button>
   </div>
 </div>

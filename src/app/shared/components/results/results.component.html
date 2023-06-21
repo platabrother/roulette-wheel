@@ -1,0 +1,17 @@
+<div class="m-5">
+  <h2 class="text-center w-100 text-white">RESULTS</h2>
+  <ol class="list-group list-group-numbered">
+    <li
+      class="list-group-item"
+      *ngIf="!previousResults || previousResults.length <= 0"
+    >
+      No results yet.
+    </li>
+    <li
+      *ngFor="let result of previousResults"
+      class="list-group-item color-{{ result.color }}"
+    >
+      {{ result.color }} - {{ result.num }}
+    </li>
+  </ol>
+</div>
