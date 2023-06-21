@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { PlateComponent } from '../shared/components/plate/plate.component';
-import { BallComponent } from '../shared/components/ball/ball.component';
+import { PlateComponent } from '@components/plate/plate.component';
+import { BallComponent } from '@components/ball/ball.component';
 
 @Component({
   selector: 'app-home',

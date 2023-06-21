@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Color, Result } from '../../interfaces/result.interface';
+import { Color, Result } from '@interfaces/result.interface';
 
 @Component({
   selector: 'app-results',

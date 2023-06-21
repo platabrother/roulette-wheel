@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Animation } from '@ionic/angular';
-import { AnimationService } from '../../services/animation.service';
+import { AnimationService } from '@services/animation.service';
 
 @Component({
   selector: 'app-plate',

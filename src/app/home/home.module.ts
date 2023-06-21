@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
-import { PlateModule } from '../shared/components/plate/plate.module';
-import { BallModule } from '../shared/components/ball/ball.module';
-import { ResultsModule } from '../shared/components/results/results.module';
+import { PlateModule } from '@components/plate/plate.module';
+import { BallModule } from '@components/ball/ball.module';
+import { ResultsModule } from '@components/results/results.module';
 
 @NgModule({
   imports: [
