@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Animation } from '@ionic/angular';
 import { AnimationService } from '@services/animation.service';
+import { ROULETTE_VEL } from '@constants/constants';
 
 @Component({
   selector: 'app-plate',
@@ -46,10 +47,11 @@ export class PlateComponent implements AfterViewInit {
     this.plateAnimation?.play();
     this.innerAnimation?.play();
 
-    this.interval = setInterval(() => {
-      if (this.resultNumber === 36) this.resultNumber = 0;
-      this.resultNumber = ++this.resultNumber;
-    }, 24000 / 36);
+    if (!this.interval)
+      this.interval = setInterval(() => {
+        if (this.resultNumber === 36) this.resultNumber = 0;
+        this.resultNumber = ++this.resultNumber;
+      }, ROULETTE_VEL / 36);
   }
 
   public onPause(): void {
@@ -57,6 +59,7 @@ export class PlateComponent implements AfterViewInit {
     this.innerAnimation?.pause();
 
     clearInterval(this.interval);
+    this.interval = undefined;
   }
 
   public onReset(): void {
@@ -64,5 +67,8 @@ export class PlateComponent implements AfterViewInit {
     this.innerAnimation?.stop();
 
     clearInterval(this.interval);
+    this.interval = undefined;
+
+    this.resultNumber = 0;
   }
 }

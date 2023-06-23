@@ -1,6 +1,8 @@
 export interface Result {
   color: Color;
   num: number;
+  round: number;
+  time: string;
 }
 
 export enum Color {

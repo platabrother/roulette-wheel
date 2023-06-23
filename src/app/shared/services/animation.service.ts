@@ -1,4 +1,5 @@
 import { ElementRef, Injectable } from '@angular/core';
+import { BALL_VEL, ROULETTE_VEL } from '@constants/constants';
 import { Animation, AnimationController } from '@ionic/angular';
 
 @Injectable({
@@ -11,7 +12,7 @@ export class AnimationService {
     return this.animationCtrl
       .create()
       .addElement(element.nativeElement)
-      .duration(24000)
+      .duration(ROULETTE_VEL)
       .iterations(Infinity)
       .keyframes([
         { offset: 0, transform: 'rotateZ(0deg)' },
@@ -23,7 +24,7 @@ export class AnimationService {
     return this.animationCtrl
       .create()
       .addElement(element.nativeElement)
-      .duration(2000)
+      .duration(BALL_VEL)
       .iterations(Infinity)
       .keyframes([
         { offset: 0, transform: 'rotateZ(0deg)' },

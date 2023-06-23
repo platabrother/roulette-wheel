@@ -1,11 +1,25 @@
 <div class="m-5">
-  <h2 class="text-center w-100 text-white">RESULTS</h2>
-  <ol class="list-group list-group-numbered">
-    <li
-      *ngFor="let result of results$ | async"
-      class="list-group-item color-{{ result.color }}"
-    >
-      {{ result.color }} - {{ result.num }}
-    </li>
-  </ol>
+  <h1 class="text-end text-white">History</h1>
+  <table class="table table-hover text-center">
+    <thead>
+      <tr>
+        <td>Round</td>
+        <td>Hour</td>
+        <td>Result</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let res of results$ | async">
+        <td class="color-{{ res.color }}">
+          {{ res?.round }}
+        </td>
+        <td class="color-{{ res.color }}">
+          {{ res?.time }}
+        </td>
+        <td class="color-{{ res.color }}">
+          {{ res?.num }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Color, Result } from '@interfaces/result.interface';
+import { Result } from '@interfaces/result.interface';
 import { ResultService } from '@services/result.service';
 import { Observable } from 'rxjs';
 

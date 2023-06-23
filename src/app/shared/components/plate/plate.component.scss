@@ -21,18 +21,6 @@ $rotate: calc(360 / $to) + 0deg;
 
 @include loop($from);
 
-body {
-  font-family: "Roboto", sans-serif;
-  background: red;
-  background-color: #300;
-  background-size: 100px 100px;
-}
-
-.main {
-  width: $platesize + 24;
-  height: $platesize + 24;
-}
-
 .plate {
   background-color: gray;
   width: $platesize;

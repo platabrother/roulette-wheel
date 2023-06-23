@@ -1,6 +1,7 @@
 <ion-toolbar>
-  <ion-title>Roulette</ion-title>
-  <ion-buttons slot="end">
-    <div class="text-white mx-3">Round {{ round$ | async }}</div>
-  </ion-buttons>
+  <div class="row mx-2">
+    <div class="col-3">Roulette</div>
+    <div class="col-6 text-center">Casa de Apuestas</div>
+    <div class="col-3 text-white text-end">Round {{ round$ | async }}</div>
+  </div>
 </ion-toolbar>

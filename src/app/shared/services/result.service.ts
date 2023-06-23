@@ -10,11 +10,11 @@ export class ResultService {
 
   public getAll(): Observable<Result[]> {
     return of([
-      { color: Color.R, num: 0 },
-      { color: Color.B, num: 11 },
-      { color: Color.R, num: 20 },
-      { color: Color.R, num: 30 },
-      { color: Color.B, num: 31 },
+      { color: Color.R, num: 0, round: 1, time: '23:30' },
+      { color: Color.B, num: 11, round: 2, time: '23:35' },
+      { color: Color.R, num: 20, round: 3, time: '23:40' },
+      { color: Color.R, num: 30, round: 4, time: '23:45' },
+      { color: Color.B, num: 31, round: 5, time: '23:50' },
     ]);
   }
 }
