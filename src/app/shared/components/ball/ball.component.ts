@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { Animation } from '@ionic/angular';

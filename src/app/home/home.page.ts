@@ -11,8 +11,6 @@ export class HomePage {
   @ViewChild('plate') plate!: PlateComponent;
   @ViewChild('ball') ball!: BallComponent;
 
-  public previousResults: any[] = [];
-
   constructor() {}
 
   public onPlay(): void {
@@ -23,5 +21,10 @@ export class HomePage {
   public onStop(): void {
     this.plate.onPause();
     this.ball.onPause();
+  }
+
+  public onReset(): void {
+    this.plate.onReset();
+    this.ball.onReset();
   }
 }
