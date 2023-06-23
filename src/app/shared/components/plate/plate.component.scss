@@ -8,7 +8,7 @@ $resetButton: darkgreen;
 $spins: 8;
 $from: 1;
 $to: 37;
-$rotate: (360 / $to)+0deg;
+$rotate: calc(360 / $to) + 0deg;
 
 @mixin loop($index) {
   @if $index < $to {
@@ -55,8 +55,8 @@ body {
     bottom: -$rimsize;
     left: -$rimsize;
     border: $rimsize solid $trim;
-    box-shadow: inset 0px 0px 0px $rimsize/3 darken($trim, 15%),
-      0px 0px 0px $rimsize/3 lighten($trim, 25%);
+    box-shadow: inset 0px 0px 0px calc($rimsize/3) darken($trim, 15%),
+      0px 0px 0px calc($rimsize/3) lighten($trim, 25%);
   }
 
   &:before {
@@ -79,17 +79,17 @@ body {
 
 .number {
   width: $pitwidth;
-  height: $platesize/2;
+  height: calc($platesize/2);
   display: inline-block;
   text-align: center;
   position: absolute;
   top: 0;
-  left: calc(50% - ($pitwidth/2));
+  left: calc(50% - calc($pitwidth / 2));
   transform-origin: 50% 100%;
   background-color: transparent;
-  border-left: $pitwidth/2 solid transparent;
-  border-right: $pitwidth/2 solid transparent;
-  border-top: $platesize/2 solid black;
+  border-left: calc($pitwidth/2) solid transparent;
+  border-right: calc($pitwidth/2) solid transparent;
+  border-top: calc($platesize/2) solid black;
   box-sizing: border-box;
   &:nth-child(odd) {
     border-top-color: red;
@@ -107,8 +107,8 @@ body {
   font-size: 12px;
   transform: scale(1, 1.8);
   position: absolute;
-  top: -$platesize/2;
-  left: -$pitwidth/2;
+  top: calc(-1 * $platesize / 2);
+  left: calc(-1 * $pitwidth / 2);
 }
 
 .inner {
