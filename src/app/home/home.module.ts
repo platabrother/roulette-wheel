@@ -8,6 +8,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { PlateModule } from '@components/plate/plate.module';
 import { BallModule } from '@components/ball/ball.module';
 import { ResultsModule } from '@components/results/results.module';
+import { ToolbarModule } from '@components/header/toolbar.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { ResultsModule } from '@components/results/results.module';
     PlateModule,
     BallModule,
     ResultsModule,
+    ToolbarModule,
   ],
   declarations: [HomePage],
 })
