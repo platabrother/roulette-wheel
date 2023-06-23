@@ -19,4 +19,9 @@ export class HomePage {
     this.plate.onPlay();
     this.ball.onPlay();
   }
+
+  public onStop(): void {
+    this.plate.onPause();
+    this.ball.onPause();
+  }
 }
