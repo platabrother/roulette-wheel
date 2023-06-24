@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RoundService } from '@services/round.service';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-toolbar',
@@ -9,6 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class ToolbarComponent implements OnInit {
   public round$!: Observable<number>;
+  public appName: string = environment.appName;
   public bettingHouseName: string = 'Casa de Apuestas';
 
   constructor(private readonly roundService: RoundService) {}
