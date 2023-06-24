@@ -1,13 +1,7 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Animation } from '@ionic/angular';
 import { AnimationService } from '@services/animation.service';
-import { ROULETTE_VEL } from '@constants/constants';
+import { NUMBERS, RED_NUMBERS, ROULETTE_VEL } from '@constants/constants';
 
 @Component({
   selector: 'app-plate',
@@ -29,12 +23,8 @@ export class PlateComponent implements AfterViewInit {
   private innerAnimation!: Animation;
   private interval: any;
 
-  public red: number[] = [
-    32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3,
-  ];
-  public numbers: number[] = Array(37)
-    .fill(0)
-    .map((x, i) => i);
+  public red: number[] = RED_NUMBERS;
+  public numbers: number[] = NUMBERS;
 
   constructor(private readonly animService: AnimationService) {}
 

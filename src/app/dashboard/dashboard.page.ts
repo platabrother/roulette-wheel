@@ -3,11 +3,11 @@ import { PlateComponent } from '@components/plate/plate.component';
 import { BallComponent } from '@components/ball/ball.component';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-dashboard',
+  templateUrl: 'dashboard.page.html',
+  styleUrls: ['dashboard.page.scss'],
 })
-export class HomePage {
+export class DashboardPage {
   @ViewChild('plate') plate!: PlateComponent;
   @ViewChild('ball') ball!: BallComponent;
 
