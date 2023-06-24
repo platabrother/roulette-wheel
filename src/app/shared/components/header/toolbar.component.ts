@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class ToolbarComponent implements OnInit {
   public round$!: Observable<number>;
+  public bettingHouseName: string = 'Casa de Apuestas';
 
   constructor(private readonly roundService: RoundService) {}
 
