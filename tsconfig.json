@@ -22,7 +22,8 @@
     "paths": {
       "@interfaces/*": ["src/app/shared/interfaces/*"],
       "@services/*": ["src/app/shared/services/*"],
-      "@components/*": ["src/app/shared/components/*"]
+      "@components/*": ["src/app/shared/components/*"],
+      "@constants/*": ["src/app/shared/constants/*"]
     }
   },
   "angularCompilerOptions": {
