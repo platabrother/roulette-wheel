@@ -9,6 +9,8 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
@@ -17,13 +19,17 @@
     "importHelpers": true,
     "target": "es2022",
     "module": "es2020",
-    "lib": ["es2018", "dom"],
+    "lib": ["es2020", "dom"],
     "useDefineForClassFields": false,
     "paths": {
       "@interfaces/*": ["src/app/shared/interfaces/*"],
       "@services/*": ["src/app/shared/services/*"],
       "@components/*": ["src/app/shared/components/*"],
-      "@constants/*": ["src/app/shared/constants/*"]
+      "@constants/*": ["src/app/shared/constants/*"],
+      "@environments/*": ["src/environments/environment"],
+      "@storage/*": ["src/core/storage/*"],
+      "@mocks/*": ["src/mocks/*"],
+      "@app/*": ["src/app/*"]
     }
   },
   "angularCompilerOptions": {

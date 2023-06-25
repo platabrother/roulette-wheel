@@ -1,0 +1,17 @@
+{
+    "id": "c340976a-6b0c-493d-8ec4-c828d7219c7a",
+    "userName": "monitor",
+    "password": "",
+    "user": {
+        "id": "5df4c314-83ab-4fb0-9fd2-fd78bcc0fedb",
+        "name": "John",
+        "removed": false
+    },
+    "createdAt": "2023-06-24T07:39:47.000Z",
+    "updatedAt": "2023-06-24T07:39:47.000Z",
+    "removed": false,
+    "roles": [
+        "monitor"
+    ],
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImMzNDA5NzZhLTZiMGMtNDkzZC04ZWM0LWM4MjhkNzIxOWM3YSIsInVzZXJOYW1lIjoibW9uaXRvciIsInBhc3N3b3JkIjoiIiwidXNlciI6eyJpZCI6IjVkZjRjMzE0LTgzYWItNGZiMC05ZmQyLWZkNzhiY2MwZmVkYiIsIm5hbWUiOiJKb2huIiwicmVtb3ZlZCI6ZmFsc2V9LCJjcmVhdGVkQXQiOiIyMDIzLTA2LTI0VDA3OjM5OjQ3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTA2LTI0VDA3OjM5OjQ3LjAwMFoiLCJyZW1vdmVkIjpmYWxzZSwicm9sZXMiOlsibW9uaXRvciJdLCJpYXQiOjE2ODc2NTUwODMsImV4cCI6MTY4NzY1ODY4M30.VUoHDadvL3TnyzNjZ6-1MRyU3mgILwq7Vh_YhyVVE6A"
+}

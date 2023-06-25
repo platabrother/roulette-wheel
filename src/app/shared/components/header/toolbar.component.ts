@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RoundService } from '@services/round.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -16,6 +16,6 @@ export class ToolbarComponent implements OnInit {
   constructor(private readonly roundService: RoundService) {}
 
   ngOnInit(): void {
-    this.round$ = this.roundService.getRoundNumber();
+    this.round$ = of(10);
   }
 }

@@ -8,22 +8,9 @@ export class RoundService {
 
   constructor(private readonly http: HttpClient) {}
 
-  public getRoundNumber(): Observable<number> {
-    return of(1492);
-  }
 
   public getLastRounds(limit: number = 10): Observable<any> {
     const url: string = `${this.url}lastrounds?limit=${limit}`;
-    const headers = new HttpHeaders({
-      userName: 'monitor',
-      password: '1234',
-    });
-
-    return this.http.get(url, { headers });
-  }
-
-  public getNextRound(): Observable<any> {
-    const url: string = `${this.url}nextround`;
     const headers = new HttpHeaders({
       userName: 'monitor',
       password: '1234',
