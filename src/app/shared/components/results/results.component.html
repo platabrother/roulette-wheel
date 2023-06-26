@@ -9,15 +9,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let res of results$ | async">
-        <td class="color-{{ res.color }}">
-          {{ res?.round }}
+      <tr *ngFor="let round of rounds$ | async">
+        <td class="color-{{ round.color }}">0</td>
+        <td class="color-{{ round.color }}">
+          {{ round?.closeTime | date: 'EEEE, h:mm a' }}
         </td>
-        <td class="color-{{ res.color }}">
-          {{ res?.time }}
-        </td>
-        <td class="color-{{ res.color }}">
-          {{ res?.num }}
+        <td class="color-{{ round.color }}">
+          {{ round?.winner }}
         </td>
       </tr>
     </tbody>

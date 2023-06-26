@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Result } from '@interfaces/result.interface';
-import { Rounds } from '@interfaces/rounds/round.interface';
+import { Color } from '@interfaces/result.interface';
+import { Round } from '@interfaces/rounds/round.interface';
 import { ApiService } from '@services/abstracts/api.service';
 import { API_KEY_CONNECTION } from '@services/http-utils/apis-url';
-import { ResultService } from '@services/result.service';
 import { RoundService } from '@services/round.service';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-results',
@@ -13,17 +12,21 @@ import { Observable } from 'rxjs';
   styleUrls: ['results.component.scss'],
 })
 export class ResultsComponent implements OnInit {
-  public results$!: Observable<Result[]>;
+  public rounds$!: Observable<Round[]>;
 
   constructor(
-    private readonly resultService: ResultService,
-    private readonly apiService: ApiService<Rounds>,
+    private readonly apiService: ApiService<Round>,
     private readonly roundService: RoundService
   ) {}
 
   ngOnInit(): void {
-    this.results$ = this.resultService.getAll();
-    this.roundService.getLastRounds().subscribe((res) => console.log(res));
+    this.rounds$ = this.roundService
+      .getLastRounds()
+      .pipe(
+        map((rounds: Round[]) =>
+          rounds.map((round: Round) => this.setRoundColor(round))
+        )
+      );
   }
 
   public onClickResult(): void {
@@ -31,8 +34,23 @@ export class ResultsComponent implements OnInit {
     const params = { userId: userId };
     this.apiService
       .getData(API_KEY_CONNECTION.GET_NEXTROUND, params)
-      .subscribe((result) => {
+      .subscribe((result: Round) => {
         console.log(result);
       });
+  }
+
+  private setRoundColor(round: Round): Round {
+    // par number
+    if (this.isEven(+round?.winner)) round.color = Color.R;
+    // no par number
+    else round.color = Color.B;
+
+    // number 36
+    if (+round.winner === 36) round.color = Color.G;
+    return round;
+  }
+
+  private isEven(n: number): boolean {
+    return n % 2 === 0;
   }
 }
