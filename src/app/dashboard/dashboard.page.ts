@@ -15,16 +15,16 @@ export class DashboardPage {
 
   public onPlay(): void {
     this.plate.onPlay();
-    this.ball.onPlay();
+    //this.ball.onPlay();
   }
 
   public onStop(): void {
     this.plate.onPause();
-    this.ball.onPause();
+    //this.ball.onPause();
   }
 
   public onReset(): void {
     this.plate.onReset();
-    this.ball.onReset();
+    //this.ball.onReset();
   }
 }

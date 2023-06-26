@@ -14,7 +14,8 @@ export class PlateComponent implements AfterViewInit {
   @ViewChild('mask') mask!: ElementRef;
   @ViewChild('plate') plate!: ElementRef;
 
-  public resultNumber: number = 0;
+  private result: number = 5;
+  public rouletteNumb: number = 36;
 
   public maskText!: string;
   public resultColor!: string;
@@ -34,18 +35,33 @@ export class PlateComponent implements AfterViewInit {
   }
 
   public onPlay(): void {
-    this.plateAnimation?.play();
     this.innerAnimation?.play();
+    //this.plateAnimation?.play();
 
-    if (!this.interval)
+    // const finalLap: number = this.generateRandomLaps(1, 5);
+    const finalLap: number = 3;
+    let lap: number = 0;
+
+    if (!this.interval) {
       this.interval = setInterval(() => {
-        if (this.resultNumber === 36) this.resultNumber = 0;
-        this.resultNumber = ++this.resultNumber;
+        if (this.rouletteNumb === this.result && lap >= finalLap) {
+          clearInterval(this.interval);
+          this.interval = undefined;
+
+          this.onPause();
+        } else {
+          if (this.rouletteNumb === 36) {
+            lap++;
+            this.rouletteNumb = 0;
+          }
+          this.rouletteNumb = ++this.rouletteNumb;
+        }
       }, ROULETTE_VEL / 36);
+    }
   }
 
   public onPause(): void {
-    this.plateAnimation?.pause();
+    //this.plateAnimation?.pause();
     this.innerAnimation?.pause();
 
     clearInterval(this.interval);
@@ -53,12 +69,19 @@ export class PlateComponent implements AfterViewInit {
   }
 
   public onReset(): void {
-    this.plateAnimation?.stop();
+    //this.plateAnimation?.stop();
     this.innerAnimation?.stop();
 
     clearInterval(this.interval);
     this.interval = undefined;
 
-    this.resultNumber = 0;
+    this.rouletteNumb = 0;
+  }
+
+  private generateRandomLaps(min: number, max: number): number {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }

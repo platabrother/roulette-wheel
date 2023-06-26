@@ -1,5 +1,5 @@
-export const ROULETTE_VEL: number = 4000;
-export const BALL_VEL: number = 1000;
+export const ROULETTE_VEL: number = 3000;
+export const BALL_VEL: number = 2000;
 
 export const NUMBERS: number[] = Array(37)
   .fill(0)
