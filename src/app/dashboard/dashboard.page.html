@@ -2,9 +2,22 @@
   <app-toolbar></app-toolbar>
   <div class="row">
     <div class="col">
-      <app-plate #plate>
-        <app-ball #ball></app-ball>
-      </app-plate>
+      <wheel
+        #wheel
+        [width]="500"
+        [height]="500"
+        [spinDuration]="8"
+        [items]="items"
+        [innerRadius]="20"
+        [spinAmount]="10"
+        [textOrientation]="textOrientation"
+        [textAlignment]="textAlignment"
+        pointerStrokeColor="black"
+        pointerFillColor="gold"
+        [idToLandOn]="MOCK_RESULT"
+        (onSpinStart)="beforeSpin()"
+        (onSpinComplete)="afterSpin()"
+      ></wheel>
     </div>
     <div class="col">
       <app-results></app-results>
@@ -12,7 +25,6 @@
   </div>
   <div class="w-100 text-center row mt-5">
     <button class="btn btn-success col mx-5" (click)="onPlay()">PLAY</button>
-    <button class="btn btn-danger col mx-5" (click)="onStop()">STOP</button>
-    <button class="btn btn-warning col mx-5" (click)="onReset()">RESET</button>
+    <button class="btn btn-dark col mx-5" (click)="onReset()">RESET</button>
   </div>
 </div>

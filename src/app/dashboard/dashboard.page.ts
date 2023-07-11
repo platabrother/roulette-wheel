@@ -1,30 +1,52 @@
-import { Component, ViewChild } from '@angular/core';
-import { PlateComponent } from '@components/plate/plate.component';
-import { BallComponent } from '@components/ball/ball.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  TextAlignment,
+  TextOrientation,
+  WheelComponent,
+} from '@components/wheel/wheel.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: 'dashboard.page.html',
   styleUrls: ['dashboard.page.scss'],
 })
-export class DashboardPage {
-  @ViewChild('plate') plate!: PlateComponent;
-  @ViewChild('ball') ball!: BallComponent;
+export class DashboardPage implements OnInit {
+  @ViewChild(WheelComponent, { static: false }) wheel!: WheelComponent;
+
+  private seed: number[] = [...Array(37).keys()];
+
+  public MOCK_RESULT: number = 5;
+  public items!: any[];
+  public textOrientation: TextOrientation = TextOrientation.HORIZONTAL;
+  public textAlignment: TextAlignment = TextAlignment.OUTER;
 
   constructor() {}
 
-  public onPlay(): void {
-    this.plate.onPlay();
-    //this.ball.onPlay();
+  ngOnInit(): void {
+    const colors = ['#FF0000', '#000000', '#198754'];
+    this.items = this.seed.map((value) => ({
+      fillStyle: value === 36 ? colors[2] : colors[value % 2],
+      text: `${value}`,
+      id: value,
+      textFillStyle: 'white',
+      textFontSize: '16',
+    }));
   }
 
-  public onStop(): void {
-    this.plate.onPause();
-    //this.ball.onPause();
+  public beforeSpin(): void {
+    alert('Your wheel is about to spin');
+  }
+
+  public async onPlay(): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    this.wheel.spin();
   }
 
   public onReset(): void {
-    this.plate.onReset();
-    //this.ball.onReset();
+    this.wheel.reset();
+  }
+
+  public afterSpin(): void {
+    alert('You have been bamboozled');
   }
 }
