@@ -23,8 +23,6 @@ export class PlateComponent implements AfterViewInit {
 
   public maskText!: string;
   public resultColor!: string;
-
-  private plateAnimation!: Animation;
   private innerAnimation!: Animation;
   private interval: any;
 
@@ -34,14 +32,11 @@ export class PlateComponent implements AfterViewInit {
   constructor(private readonly animService: AnimationService) {}
 
   ngAfterViewInit(): void {
-    this.plateAnimation = this.animService.createRotateAnimation(this.plate);
     this.innerAnimation = this.animService.createRotateAnimation(this.inner);
   }
 
   public onPlay(): void {
     this.innerAnimation?.play();
-    //this.plateAnimation?.play();
-
     //const finalLap: number = this.generateRandomLaps(1, 5);
 
     const finalLap: number = 7;
@@ -67,7 +62,6 @@ export class PlateComponent implements AfterViewInit {
   }
 
   public onPause(): void {
-    //this.plateAnimation?.pause();
     this.stopSignal$.next();
     this.innerAnimation?.pause();
 
@@ -76,7 +70,6 @@ export class PlateComponent implements AfterViewInit {
   }
 
   public onReset(): void {
-    //this.plateAnimation?.stop();
     this.innerAnimation?.stop();
 
     clearInterval(this.interval);
