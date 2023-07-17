@@ -5,9 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { DashboardPage } from './dashboard.page';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
+import { PlateModule } from '@components/plate/plate.module';
+import { BallModule } from '@components/ball/ball.module';
 import { ResultsModule } from '@components/results/results.module';
 import { ToolbarModule } from '@components/header/toolbar.module';
-import { WheelModule } from '@components/wheel/wheel.module';
 
 @NgModule({
   imports: [
@@ -15,9 +16,10 @@ import { WheelModule } from '@components/wheel/wheel.module';
     FormsModule,
     IonicModule,
     DashboardRoutingModule,
+    PlateModule,
+    BallModule,
     ResultsModule,
     ToolbarModule,
-    WheelModule, 
   ],
   declarations: [DashboardPage],
 })

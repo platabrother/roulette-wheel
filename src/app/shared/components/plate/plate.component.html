@@ -1,0 +1,22 @@
+<div class="plate" #plate>
+  <ng-content></ng-content>
+  <ul class="inner" #inner>
+    <li class="number" *ngFor="let num of numbers">
+      <label>
+        <input type="radio" name="pit" [value]="num" />
+        <span class="pit">{{ num }}</span>
+      </label>
+    </li>
+  </ul>
+  <div class="data" #data>
+    <div class="data-inner">
+      <div class="text-white" #mask>{{ maskText }}</div>
+      <div class="result">
+        <div class="result-number text-white">
+          {{ rouletteNumb }}
+        </div>
+        <div class="text-white">{{ resultColor }}</div>
+      </div>
+    </div>
+  </div>
+</div>
