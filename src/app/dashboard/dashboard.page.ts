@@ -17,7 +17,7 @@ export class DashboardPage implements OnInit {
 
   public MOCK_RESULT: number = 5;
   public items!: any[];
-  public textOrientation: TextOrientation = TextOrientation.CURVED;
+  public textOrientation: TextOrientation = TextOrientation.HORIZONTAL;
   public textAlignment: TextAlignment = TextAlignment.OUTER;
 
   constructor() {}
