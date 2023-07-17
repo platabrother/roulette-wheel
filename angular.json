@@ -13,7 +13,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["msw"],
+            "allowedCommonJsDependencies": [
+              "msw"
+            ],
             "outputPath": "dist/app/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -40,8 +42,7 @@
               "src/global.scss"
             ],
             "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "node_modules/phaser/dist/phaser.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {
@@ -170,7 +171,10 @@
             "tsConfig": "tsconfig.server.json",
             "inlineStyleLanguage": "scss",
             "stylePreprocessorOptions": {
-              "includePaths": ["src/scss", "src/assets/fonts"]
+              "includePaths": [
+                "src/scss",
+                "src/assets/fonts"
+              ]
             }
           },
           "configurations": {
@@ -220,7 +224,9 @@
         "prerender": {
           "builder": "@nguniversal/builders:prerender",
           "options": {
-            "routes": ["/"]
+            "routes": [
+              "/"
+            ]
           },
           "configurations": {
             "production": {
