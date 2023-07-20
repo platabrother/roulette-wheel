@@ -1,3 +1,11 @@
+table {
+  border: solid 5px black;
+}
+
+thead tr td {
+  font-weight: bolder;
+}
+
 .color-red {
   color: white;
   background-color: darkred;
@@ -6,4 +14,9 @@
 .color-black {
   color: white;
   background-color: black;
+}
+
+.color-green {
+  color: black;
+  background-color: seagreen;
 }
