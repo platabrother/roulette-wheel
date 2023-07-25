@@ -8,7 +8,6 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { PlateModule } from '@components/plate/plate.module';
 import { BallModule } from '@components/ball/ball.module';
 import { ResultsModule } from '@components/results/results.module';
-import { ToolbarModule } from '@components/header/toolbar.module';
 
 @NgModule({
   imports: [
@@ -19,7 +18,6 @@ import { ToolbarModule } from '@components/header/toolbar.module';
     PlateModule,
     BallModule,
     ResultsModule,
-    ToolbarModule,
   ],
   declarations: [DashboardPage],
 })

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RoundService } from '@services/round.service';
+import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -13,9 +13,13 @@ export class ToolbarComponent implements OnInit {
   public appName: string = environment.appName;
   public bettingHouseName: string = 'Casa de Apuestas';
 
-  constructor(private readonly roundService: RoundService) {}
+  constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
     this.round$ = of(10);
+  }
+
+  public navigate(): void {
+    this.router.navigate(['/login']);
   }
 }
