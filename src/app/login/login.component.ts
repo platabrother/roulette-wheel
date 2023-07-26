@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -6,7 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['login.component.scss'],
 })
 export class LoginComponent {
-  constructor() {}
+  constructor(
+    private readonly router: Router
+  ) {}
 
   public username!: string;
   public password!: string;
@@ -15,5 +18,9 @@ export class LoginComponent {
     // Implement your login logic here
     console.log('Username:', this.username);
     console.log('Password:', this.password);
+
+    
+
+    this.router.navigate(['/home'])
   }
 }
