@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { PlateComponent } from '@components/plate/plate.component';
 import { BallComponent } from '@components/ball/ball.component';
 
@@ -7,24 +7,23 @@ import { BallComponent } from '@components/ball/ball.component';
   templateUrl: 'dashboard.page.html',
   styleUrls: ['dashboard.page.scss'],
 })
-export class DashboardPage {
+export class DashboardPage implements AfterViewInit {
   @ViewChild('plate') plate!: PlateComponent;
   @ViewChild('ball') ball!: BallComponent;
 
-  constructor() {}
+  ngAfterViewInit(): void {
+    this.onPlay();
+  }
 
   public onPlay(): void {
     this.plate.onPlay();
-    //this.ball.onPlay();
   }
 
   public onStop(): void {
     this.plate.onPause();
-    //this.ball.onPause();
   }
 
   public onReset(): void {
     this.plate.onReset();
-    //this.ball.onReset();
   }
 }
