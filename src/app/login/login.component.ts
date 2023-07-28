@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '@services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -8,19 +9,17 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   constructor(
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly authService: AuthService
   ) {}
 
   public username!: string;
   public password!: string;
 
   onSubmit() {
-    // Implement your login logic here
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
-
-    
-
-    this.router.navigate(['/home'])
+    this.authService.login(this.username, this.password).subscribe((res) => {
+      this.authService.user = res.user;
+      this.router.navigate(['/home']);
+    });
   }
 }

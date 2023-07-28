@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '@services/login.service';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -13,13 +14,17 @@ export class ToolbarComponent implements OnInit {
   public appName: string = environment.appName;
   public bettingHouseName: string = 'Casa de Apuestas';
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly router: Router,
+    private readonly authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.round$ = of(10);
   }
 
-  public navigate(): void {
-    this.router.navigate(['/login']);
+  public logout(): void {
+    this.authService.user = undefined;
+    this.router.navigate(['/']);
   }
 }
