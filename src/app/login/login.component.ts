@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Round } from '@interfaces/rounds/round.interface';
 import { AuthService } from '@services/login.service';
+import { RoundService } from '@services/round.service';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +12,8 @@ import { AuthService } from '@services/login.service';
 export class LoginComponent {
   constructor(
     private readonly router: Router,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly roundService: RoundService
   ) {}
 
   public username!: string;
@@ -19,6 +22,8 @@ export class LoginComponent {
   onSubmit() {
     this.authService.login(this.username, this.password).subscribe((res) => {
       this.authService.user = res.user;
+
+      this.roundService.getNextRound();
       this.router.navigate(['/home']);
     });
   }
