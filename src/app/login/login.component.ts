@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Round } from '@interfaces/rounds/round.interface';
-import { AuthService } from '@services/login.service';
+import { AuthService } from '@services/auth.service';
 import { RoundService } from '@services/round.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class LoginComponent {
 
   onSubmit() {
     this.authService.login(this.username, this.password).subscribe((res) => {
-      this.authService.user = res.user;
+      this.authService.user = { ...res.user, pass: this.password };
 
       this.roundService.getNextRound();
       this.router.navigate(['/home']);

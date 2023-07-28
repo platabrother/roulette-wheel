@@ -1,10 +1,18 @@
 <ion-toolbar>
   <div class="row mx-2 fw-bolder">
     <div class="col-3">
-      <button type="button" class="btn btn-dark" (click)="logout()">
+      <button
+        *ngIf="!isLoginPage"
+        type="button"
+        class="btn btn-dark"
+        (click)="logout()"
+      >
         <i class="bi bi-box-arrow-left"></i>
+        EXIT
       </button>
-      {{ appName | titlecase }}
+      <span *ngIf="isLoginPage">
+        {{ appName | titlecase }}
+      </span>
     </div>
     <div class="col-6 text-center">{{ bettingHouseName }}</div>
     <div class="col-3 text-white text-end" *ngIf="nextRound?.closeTime">
