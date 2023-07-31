@@ -135,3 +135,7 @@ $rotate: calc(360 / $to) + 0deg;
       0px 0px 0px 2px lighten($trimSecondary, 25%);
   }
 }
+
+.result-number {
+  color: white !important;
+}

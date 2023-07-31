@@ -1,5 +1,5 @@
 table {
-  border: solid 5px black;
+  min-width: 500px;
 }
 
 thead tr td {
@@ -8,15 +8,15 @@ thead tr td {
 
 .color-red {
   color: white;
-  background-color: darkred;
+  background-color: rgba(darkred, 0.9);
 }
 
 .color-black {
   color: white;
-  background-color: black;
+  background-color: rgba(black, 0.9);
 }
 
 .color-green {
   color: black;
-  background-color: seagreen;
+  background-color: rgba(seagreen, 0.9);
 }

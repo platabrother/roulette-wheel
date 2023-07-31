@@ -1,4 +1,17 @@
-ion-toolbar{
-    --background: var(--bs-body-color);
-    color: white;
+ion-toolbar {
+  --background: rgba(0, 0, 0, 0.9);
+  border-bottom: solid 1px #ccc;
+  color: white;
+}
+
+.btn {
+  color: white;
+}
+
+.btn:hover {
+  color: red;
+}
+
+.btn:active {
+  border: none;
 }

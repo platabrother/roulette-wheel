@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Round } from '@interfaces/rounds/round.interface';
 import { AuthService } from '@services/auth.service';
 import { RoundService } from '@services/round.service';
 
@@ -20,6 +19,8 @@ export class LoginComponent {
   public password!: string;
 
   onSubmit() {
+    if (!this.username || !this.password) return;
+
     this.authService.login(this.username, this.password).subscribe((res) => {
       this.authService.user = { ...res.user, pass: this.password };
 

@@ -1,12 +1,12 @@
-.container {
-  margin-top: 100px;
-}
-
 .login-form {
-  background-color: #f7f7f7;
+  background-color: rgba(0, 0, 0, 0.5);
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 5px;
+
+  -webkit-box-shadow: 15px 0px 10px -10px rgba(0, 0, 0, 0.51);
+  -moz-box-shadow: 15px 0px 10px -10px rgba(0, 0, 0, 0.51);
+  box-shadow: 15px 0px 10px -10px rgba(0, 0, 0, 0.51);
 }
 
 .form-group {
@@ -15,8 +15,22 @@
 
 label {
   font-weight: bold;
+  color: white;
 }
 
-.btn-primary {
-  width: 100%;
+.btn-login {
+  color: white;
+  background-color: darkred;
+}
+
+.form-control {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.form-control:focus {
+  color: white;
+  border-color: darkred;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(darkred, 0.25);
 }
