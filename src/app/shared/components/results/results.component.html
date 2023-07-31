@@ -1,16 +1,14 @@
 <div>
-  <h1 class="text-end text-white">History</h1>
+  <h1 class="text-end text-white">Histórico</h1>
   <table class="table table-hover text-center">
     <thead>
       <tr>
-        <td>Round</td>
-        <td>Hour</td>
-        <td>Result</td>
+        <td>Hora</td>
+        <td>Resultado</td>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let round of rounds$ | async">
-        <td class="color-{{ round.color }}">0</td>
         <td class="color-{{ round.color }}">
           {{ round?.closeTime | date : "EEEE, h:mm a" }}
         </td>

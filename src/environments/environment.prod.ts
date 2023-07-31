@@ -1,7 +1,7 @@
 import packageJson from '../../package.json';
 
 export const environment = {
-  appName: 'roulette',
+  appName: 'Ruleta de la Fortuna',
   appVersion: packageJson.version,
   production: true,
   mockServer: false,
