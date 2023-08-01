@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  Subscribable,
+  Subscription,
+  interval,
+  of,
+  takeUntil,
+} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Round } from '@interfaces/rounds/round.interface';
 import { AuthService } from './auth.service';
@@ -15,7 +24,9 @@ export class RoundService {
   public nextRound$: Observable<Round | null> =
     this.roundSubject.asObservable();
 
-  private countdownSubject: BehaviorSubject<number> = new BehaviorSubject(0);
+  private stopSignal$ = new Subject<void>();
+  private subInterval!: any;
+  private countdownSubject: Subject<number> = new Subject();
   public countdown$: Observable<number> = this.countdownSubject.asObservable();
 
   constructor(
@@ -45,6 +56,7 @@ export class RoundService {
     });
 
     this.http.get<Round>(url, { headers }).subscribe((res) => {
+      console.log('get next round: ', res);
       this.roundSubject.next(res);
       this.calcCountdown(res?.closeTime);
     });
@@ -55,17 +67,33 @@ export class RoundService {
   }
 
   private calcCountdown(time: string): void {
-    const currentTime = new Date();
     const endTime: Date = new Date(time);
-    const diffInSeconds = Math.floor(
+    let currentTime = new Date();
+    let diffInSeconds = Math.floor(
       (endTime.getTime() - currentTime.getTime()) / 1000
     );
 
-    if(diffInSeconds < 0) return;
+    if (!this.subInterval)
+      this.subInterval = interval(1000)
+        .pipe(takeUntil(this.stopSignal$))
+        .subscribe(() => {
+          currentTime = new Date();
+          diffInSeconds = Math.floor(
+            (endTime.getTime() - currentTime.getTime()) / 1000
+          );
 
-    setTimeout(() => {
-      this.countdownSubject.next(diffInSeconds);
-      this.calcCountdown(time);
-    }, 1000);
+          this.countdownSubject.next(diffInSeconds);
+          console.log(diffInSeconds);
+
+          if (diffInSeconds <= 0) this.resetInterval();
+        });
+  }
+
+  private resetInterval(): void {
+    this.stopSignal$.next();
+    clearInterval(this.subInterval);
+    this.subInterval = undefined;
+
+    this.getNextRound();
   }
 }
