@@ -15,6 +15,9 @@ export class RoundService {
   public nextRound$: Observable<Round | null> =
     this.roundSubject.asObservable();
 
+  private countdownSubject: BehaviorSubject<number> = new BehaviorSubject(0);
+  public countdown$: Observable<number> = this.countdownSubject.asObservable();
+
   constructor(
     private readonly http: HttpClient,
     private readonly authService: AuthService
@@ -41,12 +44,28 @@ export class RoundService {
       password: user?.pass ?? '',
     });
 
-    this.http
-      .get<Round>(url, { headers })
-      .subscribe((res) => this.roundSubject.next(res));
+    this.http.get<Round>(url, { headers }).subscribe((res) => {
+      this.roundSubject.next(res);
+      this.calcCountdown(res?.closeTime);
+    });
   }
 
   public clearNextRound(): void {
     this.roundSubject.next(undefined);
+  }
+
+  private calcCountdown(time: string): void {
+    const currentTime = new Date();
+    const endTime: Date = new Date(time);
+    const diffInSeconds = Math.floor(
+      (endTime.getTime() - currentTime.getTime()) / 1000
+    );
+
+    if(diffInSeconds < 0) return;
+
+    setTimeout(() => {
+      this.countdownSubject.next(diffInSeconds);
+      this.calcCountdown(time);
+    }, 1000);
   }
 }
