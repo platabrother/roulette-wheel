@@ -1,3 +1,7 @@
+$text-color: white;
+$border-color: gold;
+$button-color: white;
+
 .login-form {
   background-color: rgba(0, 0, 0, 0.5);
   border: 1px solid #ccc;
@@ -15,22 +19,27 @@
 
 label {
   font-weight: bold;
-  color: white;
+  color: $text-color;
 }
 
 .btn-login {
-  color: white;
-  background-color: darkred;
+  color: black;
+  background-color: $button-color;
+}
+
+.btn-login:hover {
+  background-color: rgba(gold, 0.7);
+  font-weight: bolder;
 }
 
 .form-control {
-  color: white;
+  color: $text-color;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
 .form-control:focus {
-  color: white;
-  border-color: darkred;
+  color: $text-color;
+  border-color: $border-color;
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(darkred, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba($border-color, 0.25);
 }
