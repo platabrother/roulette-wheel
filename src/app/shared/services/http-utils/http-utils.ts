@@ -18,11 +18,18 @@ export class HttpUtils {
   constructor(public http: HttpClient) {}
 
   public getApiMatched(url: string, params: any = {}): string {
-    Object.keys(params).forEach((key) => {
-      url = url.replace(`{${key}}`, params[key]);
-    });
+    const queryParams = new URLSearchParams();
+    for (const key in params) {
+        if (params.hasOwnProperty(key)) {
+            queryParams.set(key, params[key]);
+        }
+    }
+    const queryString = queryParams.toString();
+    if (queryString) {
+        url = url.includes('?') ? url + '&' + queryString : url + '?' + queryString;
+    }
     return url;
-  }
+}
 
   public getApi(keyApi: string): ApiUrl {
     for (const [key, value] of Object.entries(APIS_URL)) {
@@ -46,23 +53,43 @@ export class HttpUtils {
     delete this.requestChached[key];
   }
   
-  public get<T>(keyApi: string, params = {}, refresh?: boolean): Observable<T> {
+  public get<T>(keyApi: string, params = {}, queryParams = {}, refresh?: boolean, useCache: boolean = true): Observable<T> {
     const api: ApiUrl = this.getApi(keyApi);
-
+  
+    const originalParams = { ...params };
+  
     const apiKey = this.getApiMatched(api.path, params);
     if (refresh) {
-      console.log('BackOfficeRefresh', apiKey);
-      return this.getAndSave(api);
+        console.log('BackOfficeRefresh', apiKey);
+        this.deleteCacheItem(apiKey);
+        return this.getAndSave(api, false);
     }
     const observableCached = this.getCacheItem<T>(apiKey);
-    if (observableCached) {
-      console.log('CHACHEADA', apiKey);
-      return observableCached;
+    if (useCache && observableCached) {
+        console.log('CHACHEADA', apiKey);
+        return observableCached;
     }
     console.log('BackOffice', apiKey);
-    return this.getAndSave({ path: apiKey, server: api.server });
+    let url = this.addParamsToUrl(api.path, originalParams);
+    url = this.addParamsToUrl(url, queryParams);
+    return this.getAndSave({ path: url, server: api.server }, false);
   }
 
+
+private addParamsToUrl(url: string, params: any): string {
+    const queryParams = new URLSearchParams();
+    for (const key in params) {
+        if (params.hasOwnProperty(key)) {
+            queryParams.set(key, params[key]);
+        }
+    }
+    const queryString = queryParams.toString();
+    if (queryString) {
+        url = url.includes('?') ? url + '&' + queryString : url + '?' + queryString;
+    }
+    return url;
+}
+  
   //   POST
   public post<T>(keyApi: string, params = {}, body = {}): Observable<T> {
     const api: ApiUrl = this.getApi(keyApi);
@@ -71,7 +98,7 @@ export class HttpUtils {
     return this.postAndSave({ path: apiKey, server: api.server }, body);
   }
 
-  private getAndSave<T>(api: ApiUrl): Observable<T> {
+  private getAndSave<T>(api: ApiUrl, useCache: boolean = true): Observable<T> {
     const observable = this.http.get<T>(api.server + api.path).pipe(
       shareReplay(1),
       catchError((err: HttpErrorResponse) => {
@@ -79,7 +106,9 @@ export class HttpUtils {
         return throwError(err);
       })
     );
-    this.setCacheItem(api.path, observable);
+    if (useCache) {
+      this.setCacheItem(api.path, observable);
+    }
     return observable;
   }
 

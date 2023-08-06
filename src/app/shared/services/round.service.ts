@@ -1,23 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import {
   BehaviorSubject,
   Observable,
   Subject,
-  Subscribable,
-  Subscription,
   interval,
-  of,
   takeUntil,
+  Subscription,
+  finalize,
 } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Round } from '@interfaces/rounds/round.interface';
+import { ApiService } from './abstracts/api.service';
+import { API_KEY_CONNECTION } from './http-utils/apis-url';
 import { AuthService } from './auth.service';
-import { User } from '@interfaces/user';
+import { HttpUtils } from './http-utils/http-utils';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable()
 export class RoundService {
-  private readonly url: string = 'http://38.242.243.231:3005/rounds/';
-
   private roundSubject: BehaviorSubject<Round | any> = new BehaviorSubject(
     undefined
   );
@@ -30,37 +29,54 @@ export class RoundService {
   public countdown$: Observable<number> = this.countdownSubject.asObservable();
 
   constructor(
-    private readonly http: HttpClient,
-    private readonly authService: AuthService
-  ) {}
-
-  public getLastRounds(limit: number = 10): Observable<any> {
-    const user: User | undefined = this.authService.user;
-
-    const url: string = `${this.url}lastrounds?limit=${limit}`;
-    const headers = new HttpHeaders({
-      userName: user?.name ?? '',
-      password: user?.pass ?? '',
-    });
-
-    return this.http.get(url, { headers });
+    @Inject(PLATFORM_ID) private platformId: string,
+    private readonly authService: AuthService,
+    private readonly apiServiceLastRound: ApiService<Round[]>,
+    private readonly apiServiceNextRound: ApiService<Round>,
+    private readonly httpUtils: HttpUtils
+  ) {
   }
 
-  public getNextRound(): void {
-    const user: User | undefined = this.authService.user;
-
-    const url: string = `${this.url}nextround`;
-    const headers = new HttpHeaders({
-      userName: user?.name ?? '',
-      password: user?.pass ?? '',
-    });
-
-    this.http.get<Round>(url, { headers }).subscribe((res) => {
-      console.log('get next round: ', res);
-      this.roundSubject.next(res);
-      this.calcCountdown(res?.closeTime);
-    });
+  public getLastRounds(): Observable<Round[]> {
+    if (this.authService.user && this.authService.user.id) {
+      const params = {
+        userId: this.authService.user.id,
+        limit: 10,
+      };
+      return this.apiServiceLastRound.getData(
+        API_KEY_CONNECTION.GET_LASTROUND,
+        params,
+        true,
+        false
+      );
+    }
+    //O lo que sea
+    return this.apiServiceLastRound.getData(
+      API_KEY_CONNECTION.GET_LASTROUND,
+      {},
+      true,
+      false
+    );
   }
+
+
+public getNextRound(): void {
+  if (this.authService.user && this.authService.user.id) {
+    const params = {
+      userId: this.authService.user.id,
+    };
+    this.httpUtils.deleteCacheItem(API_KEY_CONNECTION.GET_NEXTROUND);
+
+    this.apiServiceNextRound
+      .getData(API_KEY_CONNECTION.GET_NEXTROUND, params, true, false)
+      .pipe(finalize(() => this.getNextRound()))
+      .subscribe((res: Round) => {
+        console.log('get next round: ', res);
+        this.roundSubject.next(res);
+        this.calcCountdown(res?.closeTime);
+      });
+  }
+}
 
   public clearNextRound(): void {
     this.roundSubject.next(undefined);
@@ -91,9 +107,10 @@ export class RoundService {
 
   private resetInterval(): void {
     this.stopSignal$.next();
-    clearInterval(this.subInterval);
-    this.subInterval = undefined;
-
+    if (this.subInterval) {
+      this.subInterval.unsubscribe();
+      this.subInterval = undefined;
+    }
     this.getNextRound();
   }
 }
