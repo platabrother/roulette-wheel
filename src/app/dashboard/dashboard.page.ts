@@ -73,5 +73,6 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.subCountdown.unsubscribe();
     this.subNextRound.unsubscribe();
+    this.subTest.unsubscribe();
   }
 }
