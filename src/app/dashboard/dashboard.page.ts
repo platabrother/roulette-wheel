@@ -23,28 +23,42 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
   private subCountdown!: Subscription;
   private subNextRound!: Subscription;
 
+  private subTest!: Subscription;
+
   constructor(private readonly roundService: RoundService) {}
 
   ngAfterViewInit(): void {
+    this.subTest = this.roundService.getNextRound().subscribe((res) => {
+      this.roundService.clearNextRound(res);
+      this.roundService.calcCountdown(res?.closeTime);
+    });
+
     this.subCountdown = this.roundService.countdown$.subscribe((res: number) =>
       this.onCountdownSubscription(res)
     );
 
     this.subNextRound = this.roundService.nextRound$
       .pipe(filter((res: Round | null) => !!res))
-      .subscribe(() => this.onPlay());
+      .subscribe(() => {
+        this.onReset();
+        this.onPlay();
+      });
   }
 
   private onCountdownSubscription(res: number): void {
-    //console.log('Countdown: ', res);
+    if (res === 0) {
+      this.subTest.unsubscribe();
 
-    // if (res === 0) {
-    //   this.roundService.getNextRound();
-    // }
+      setTimeout(() => {
+        this.subTest = this.roundService.getNextRound().subscribe((res) => {
+          this.roundService.clearNextRound(res);
+          this.roundService.calcCountdown(res?.closeTime);
+        });
+      }, 5000);
+    }
   }
 
   public onPlay(): void {
-    console.log('Starting new round...');
     this.plate.onPlay();
   }
 

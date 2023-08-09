@@ -7,6 +7,7 @@ import {
   takeUntil,
   Subscription,
   finalize,
+  of,
 } from 'rxjs';
 import { Round } from '@interfaces/rounds/round.interface';
 import { ApiService } from './abstracts/api.service';
@@ -14,9 +15,13 @@ import { API_KEY_CONNECTION } from './http-utils/apis-url';
 import { AuthService } from './auth.service';
 import { HttpUtils } from './http-utils/http-utils';
 import { isPlatformBrowser } from '@angular/common';
+import { HttpClient, HttpHandler, HttpHeaders } from '@angular/common/http';
+import { User } from '@interfaces/user';
 
 @Injectable()
 export class RoundService {
+  private readonly url: string = 'http://38.242.243.231:3005/rounds/';
+
   private roundSubject: BehaviorSubject<Round | any> = new BehaviorSubject(
     undefined
   );
@@ -32,10 +37,8 @@ export class RoundService {
     @Inject(PLATFORM_ID) private platformId: string,
     private readonly authService: AuthService,
     private readonly apiServiceLastRound: ApiService<Round[]>,
-    private readonly apiServiceNextRound: ApiService<Round>,
-    private readonly httpUtils: HttpUtils
-  ) {
-  }
+    private readonly http: HttpClient
+  ) {}
 
   public getLastRounds(): Observable<Round[]> {
     if (this.authService.user && this.authService.user.id) {
@@ -59,36 +62,31 @@ export class RoundService {
     );
   }
 
+  public getNextRound(): Observable<Round> {
+    const salt = new Date().getTime();
+    const user: User | undefined = this.authService.user;
 
-public getNextRound(): void {
-  if (this.authService.user && this.authService.user.id) {
-    const params = {
-      userId: this.authService.user.id,
-    };
-    this.httpUtils.deleteCacheItem(API_KEY_CONNECTION.GET_NEXTROUND);
+    const url: string = `${this.url}nextround`;
+    const headers = new HttpHeaders({
+      userName: user?.name ?? '',
+      password: user?.pass ?? '',
+    });
 
-    this.apiServiceNextRound
-      .getData(API_KEY_CONNECTION.GET_NEXTROUND, params, true, false)
-      .pipe(finalize(() => this.getNextRound()))
-      .subscribe((res: Round) => {
-        console.log('get next round: ', res);
-        this.roundSubject.next(res);
-        this.calcCountdown(res?.closeTime);
-      });
-  }
-}
-
-  public clearNextRound(): void {
-    this.roundSubject.next(undefined);
+    return this.http.get<Round>(`${url}?${salt}`, { headers });
   }
 
-  private calcCountdown(time: string): void {
+  public clearNextRound(value: Round | undefined = undefined): void {
+    this.roundSubject.next(value);
+  }
+
+  public calcCountdown(time: string): void {
     const endTime: Date = new Date(time);
     let currentTime = new Date();
     let diffInSeconds = Math.floor(
       (endTime.getTime() - currentTime.getTime()) / 1000
     );
 
+    console.log('dif in seconds: ', diffInSeconds);
     if (!this.subInterval)
       this.subInterval = interval(1000)
         .pipe(takeUntil(this.stopSignal$))
@@ -111,6 +109,5 @@ public getNextRound(): void {
       this.subInterval.unsubscribe();
       this.subInterval = undefined;
     }
-    this.getNextRound();
   }
 }
