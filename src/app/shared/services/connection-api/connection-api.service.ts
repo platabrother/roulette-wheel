@@ -13,27 +13,15 @@ import { StorageService } from 'src/core/storage/storage.service';
 export class ConnectionService {
   constructor(private httpUtils: HttpUtils, private storage: StorageService) {}
 
-  public getTokenConnection(): Observable<string> {
-    const token = this._getTokenFromStorage();
-    if (token) {
-      return of(token);
-    } else {
-      const credentials = this._getCredentials();
-      return this._getTokenFromServer(credentials);
+  public getTokenConnection(forceRefresh = false): Observable<string> {
+    if (!forceRefresh) {
+      const token = this.storage.getItem('bearer_token');
+      if (token) return of(token);
     }
-  }
 
-  private _getTokenFromStorage(): string {
-    return this.storage.getItem('bearer_token') || '';
-  }
-
-  private _getCredentials(): { userName: string; password: string } {
     const creds = Buffer.from(environment.tokenReader, 'base64').toString('binary');
-    const [userName, password] = creds.split(':');
-    return { userName, password };
-  }
-
-  private _getTokenFromServer(credentials: { userName: string; password: string }): Observable<string> {
+    const [username, password] = creds.split(':');
+    const credentials = { username, password };
     return this.httpUtils.post<BearerToken>('bearerToken', {}, credentials).pipe(
       map((res) => {
         this.storage.setItem('bearer_token', res.token);
