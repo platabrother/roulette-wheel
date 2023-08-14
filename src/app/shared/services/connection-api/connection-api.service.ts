@@ -8,7 +8,7 @@ import { HttpUtils } from '@services/http-utils/http-utils';
 import { StorageService } from 'src/core/storage/storage.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConnectionService {
   constructor(private httpUtils: HttpUtils, private storage: StorageService) {}
@@ -19,14 +19,18 @@ export class ConnectionService {
       if (token) return of(token);
     }
 
-    const creds = Buffer.from(environment.tokenReader, 'base64').toString('binary');
-    const [username, password] = creds.split(':');
-    const credentials = { username, password };
-    return this.httpUtils.post<BearerToken>('bearerToken', {}, credentials).pipe(
-      map((res) => {
-        this.storage.setItem('bearer_token', res.token);
-        return res.token;
-      })
+    const creds = Buffer.from(environment.tokenReader, 'base64').toString(
+      'binary'
     );
+    const [userName, password] = creds.split(':');
+    const credentials = { userName, password };
+    return this.httpUtils
+      .post<BearerToken>('bearerToken', {}, credentials)
+      .pipe(
+        map((res) => {
+          this.storage.setItem('bearer_token', res.token);
+          return res.token;
+        })
+      );
   }
 }

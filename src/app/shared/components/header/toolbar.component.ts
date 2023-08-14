@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Round } from '@interfaces/rounds/round.interface';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@services/auth/auth.service';
 import { RoundService } from '@services/round.service';
 import { environment } from 'src/environments/environment';
 
@@ -37,7 +37,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   public logout(): void {
-    this.authService.user = undefined;
+    this.authService.logout();
     this.roundService.clearNextRound();
     this.router.navigate(['/']);
   }

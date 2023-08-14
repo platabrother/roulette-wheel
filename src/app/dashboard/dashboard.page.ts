@@ -23,15 +23,10 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
   private subCountdown!: Subscription;
   private subNextRound!: Subscription;
 
-  private subTest!: Subscription;
-
   constructor(private readonly roundService: RoundService) {}
 
   ngAfterViewInit(): void {
-    this.subTest = this.roundService.getNextRound().subscribe((res) => {
-      this.roundService.clearNextRound(res);
-      this.roundService.calcCountdown(res?.closeTime);
-    });
+    this.roundService.requestNextRound();
 
     this.subCountdown = this.roundService.countdown$.subscribe((res: number) =>
       this.onCountdownSubscription(res)
@@ -47,13 +42,8 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
 
   private onCountdownSubscription(res: number): void {
     if (res === 0) {
-      this.subTest.unsubscribe();
-
       setTimeout(() => {
-        this.subTest = this.roundService.getNextRound().subscribe((res) => {
-          this.roundService.clearNextRound(res);
-          this.roundService.calcCountdown(res?.closeTime);
-        });
+        this.roundService.requestNextRound();
       }, 5000);
     }
   }
@@ -73,6 +63,5 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.subCountdown.unsubscribe();
     this.subNextRound.unsubscribe();
-    this.subTest.unsubscribe();
   }
 }

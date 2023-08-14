@@ -1,24 +1,49 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, switchMap, BehaviorSubject, filter, take, catchError, finalize, EMPTY, of, throwError } from 'rxjs';
+import {
+  Observable,
+  switchMap,
+  BehaviorSubject,
+  filter,
+  take,
+  catchError,
+  finalize,
+  EMPTY,
+  of,
+  throwError,
+} from 'rxjs';
 import { APIS_URL, API_KEY_CONNECTION } from '@services/http-utils/apis-url';
 import { environment } from '@environments/environment';
 import { ConnectionService } from '@services/connection-api/connection-api.service';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConnectionInterceptor implements HttpInterceptor {
   private token = '';
-  private tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(
+    ''
+  );
   private isRefreshingToken = false;
 
-  constructor(private connectionService: ConnectionService, private router: Router) {
+  constructor(
+    private connectionService: ConnectionService,
+    private router: Router
+  ) {
     this.tokenSubject.subscribe((token) => (this.token = token));
   }
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
     if (request.url.includes(APIS_URL[API_KEY_CONNECTION.GET_TOKEN].path)) {
       return next.handle(request);
     }
@@ -57,22 +82,28 @@ export class ConnectionInterceptor implements HttpInterceptor {
               })
             );
           }
-        }  else {
+        } else {
           return throwError(() => error);
         }
       })
     );
   }
 
-  private addTokenToRequest(request: HttpRequest<unknown>, token: string): HttpRequest<unknown> {
+  private addTokenToRequest(
+    request: HttpRequest<unknown>,
+    token: string
+  ): HttpRequest<unknown> {
     return request.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 
-  private handle401Error(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  private handle401Error(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
     if (!this.isRefreshingToken) {
       this.isRefreshingToken = true;
       this.tokenSubject.next('');

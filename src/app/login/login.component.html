@@ -1,15 +1,15 @@
 <div class="container h-100 fade-in">
   <div class="row h-100 justify-content-center align-items-center">
     <div class="col-md-6">
-      <form (ngSubmit)="onSubmit()" class="login-form">
+      <form [formGroup]="form" (ngSubmit)="login()" class="login-form">
         <div class="form-group">
-          <label for="username">Usuario</label>
+          <label for="userName">Usuario</label>
           <input
             type="text"
+            name="userName"
+            formControlName="userName"
+            autocomplete="off"
             class="form-control"
-            id="username"
-            [(ngModel)]="username"
-            name="username"
             required
           />
         </div>
@@ -18,13 +18,22 @@
           <input
             type="password"
             class="form-control"
-            id="password"
-            [(ngModel)]="password"
             name="password"
+            formControlName="password"
             required
           />
         </div>
-        <button type="submit" class="btn btn-login w-100">ENTRAR</button>
+        <br /><br />
+        <p *ngIf="form.hasError('invalidCredentials')" class="error-msg">
+          Las credenciales son incorrectas
+        </p>
+        <button
+          type="submit"
+          class="btn btn-login w-100"
+          [disabled]="processingRequest"
+        >
+          ENTRAR
+        </button>
       </form>
     </div>
   </div>

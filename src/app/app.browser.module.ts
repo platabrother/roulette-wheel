@@ -14,7 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MY_REQUEST } from 'src/core/config/config.data';
 import { MyRequestBrowser } from '@services/requests/request.browser';
 import { TransferHttpCacheModule } from '@nguniversal/common';
-import { ConnectionInterceptor } from 'src/core/interceptor/interceptor-apis.interceptor';
+import { ConnectionInterceptor } from 'src/core/interceptors/interceptor-apis.interceptor';
 import { ToolbarModule } from '@components/header/toolbar.module';
 
 @NgModule({
