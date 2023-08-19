@@ -43,11 +43,8 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
   private onCountdownSubscription(res: number): void {
     if (res <= 0) {
       this.roundService.requestNextRound();
+      this.roundService.getLastRounds();
     }
-  }
-
-  public onStop(): void {
-    this.plate.onPause();
   }
 
   ngOnDestroy(): void {

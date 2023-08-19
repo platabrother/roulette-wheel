@@ -1,21 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Color } from '@interfaces/result.interface';
 import { Round } from '@interfaces/rounds/round.interface';
 import { RoundService } from '@services/round.service';
-import { Observable, map } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 
 @Component({
   selector: 'app-results',
   templateUrl: 'results.component.html',
   styleUrls: ['results.component.scss'],
 })
-export class ResultsComponent implements OnInit {
+export class ResultsComponent implements OnInit, OnDestroy {
+  private subCountdown!: Subscription;
+
   public rounds$!: Observable<Round[]>;
 
   constructor(private readonly roundService: RoundService) {}
 
   ngOnInit(): void {
-    this.rounds$ = this.roundService
+    this.rounds$ = this.getLastRounds();
+  }
+
+  private getLastRounds(): Observable<Round[]> {
+    return this.roundService
       .getLastRounds()
       .pipe(
         map((rounds: Round[]) =>
@@ -37,5 +43,9 @@ export class ResultsComponent implements OnInit {
 
   private isEven(n: number): boolean {
     return n % 2 === 0;
+  }
+
+  ngOnDestroy(): void {
+    this.subCountdown.unsubscribe();
   }
 }

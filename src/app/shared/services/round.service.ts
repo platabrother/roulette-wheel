@@ -1,4 +1,4 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   Observable,
@@ -7,14 +7,12 @@ import {
   takeUntil,
   switchMap,
   EMPTY,
-  debounce,
   debounceTime,
 } from 'rxjs';
 import { Round } from '@interfaces/rounds/round.interface';
 import { ApiService } from './abstracts/api.service';
 import { API_KEY_CONNECTION } from './http-utils/apis-url';
 import { AuthService } from './auth/auth.service';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class RoundService {
@@ -31,11 +29,9 @@ export class RoundService {
   private fetchNextRoundTrigger = new Subject<void>();
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: string,
     private readonly authService: AuthService,
     private readonly apiServiceLastRound: ApiService<Round[]>,
-    private readonly apiServiceNextRound: ApiService<Round>,
-    private readonly http: HttpClient
+    private readonly apiServiceNextRound: ApiService<Round>
   ) {
     this.fetchNextRoundTrigger
       .pipe(switchMap(() => this.getNextRound()))
@@ -49,9 +45,11 @@ export class RoundService {
     return this.authService.user$.pipe(
       switchMap((user) => {
         if (user?.id) {
+          let salt = new Date().getTime();
           const params = {
             userId: user.id,
             limit: 10,
+            salt,
           };
           return this.apiServiceLastRound.getData(
             API_KEY_CONNECTION.GET_LASTROUND,
@@ -65,7 +63,7 @@ export class RoundService {
 
   public getNextRound(): Observable<Round> {
     if (this.subInterval) return EMPTY;
-    
+
     return this.authService.user$.pipe(
       debounceTime(1000),
       switchMap((user) => {
