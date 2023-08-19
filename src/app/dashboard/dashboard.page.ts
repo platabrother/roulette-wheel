@@ -8,7 +8,7 @@ import {
 import { PlateComponent } from '@components/plate/plate.component';
 import { BallComponent } from '@components/ball/ball.component';
 import { RoundService } from '@services/round.service';
-import { Subscription, filter } from 'rxjs';
+import { Subscription, debounceTime, filter } from 'rxjs';
 import { Round } from '@interfaces/rounds/round.interface';
 
 @Component({
@@ -23,6 +23,8 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
   private subCountdown!: Subscription;
   private subNextRound!: Subscription;
 
+  private countDown!: number;
+
   constructor(private readonly roundService: RoundService) {}
 
   ngAfterViewInit(): void {
@@ -33,14 +35,21 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
     );
 
     this.subNextRound = this.roundService.nextRound$
-      .pipe(filter((res: Round | null) => !!res))
+      .pipe(
+        debounceTime(1500),
+        filter((res: Round | null) => !!res)
+      )
       .subscribe(() => {
+        if (this.countDown <= 30) return;
+
         this.plate.onReset();
         this.plate.onPlay();
       });
   }
 
   private onCountdownSubscription(res: number): void {
+    this.countDown = res;
+
     if (res <= 0) {
       this.roundService.requestNextRound();
       this.roundService.getLastRounds();
