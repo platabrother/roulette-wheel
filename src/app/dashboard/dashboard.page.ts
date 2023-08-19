@@ -35,33 +35,24 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
     this.subNextRound = this.roundService.nextRound$
       .pipe(filter((res: Round | null) => !!res))
       .subscribe(() => {
-        this.onReset();
-        this.onPlay();
+        this.plate.onReset();
+        this.plate.onPlay();
       });
   }
 
   private onCountdownSubscription(res: number): void {
-    if (res === 0) {
-      setTimeout(() => {
-        this.roundService.requestNextRound();
-      }, 5000);
+    if (res <= 0) {
+      this.roundService.requestNextRound();
     }
-  }
-
-  public onPlay(): void {
-    this.plate.onPlay();
   }
 
   public onStop(): void {
     this.plate.onPause();
   }
 
-  public onReset(): void {
-    this.plate.onReset();
-  }
-
   ngOnDestroy(): void {
     this.subCountdown.unsubscribe();
     this.subNextRound.unsubscribe();
+    this.roundService.resetInterval();
   }
 }

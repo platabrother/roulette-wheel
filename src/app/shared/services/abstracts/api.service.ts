@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
 import { QueryParamsGeneric } from '@interfaces/params-generic.interface';
 import { HttpUtils } from '@services/http-utils/http-utils';
 

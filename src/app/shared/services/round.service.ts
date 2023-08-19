@@ -6,7 +6,9 @@ import {
   interval,
   takeUntil,
   switchMap,
-  EMPTY
+  EMPTY,
+  debounce,
+  debounceTime,
 } from 'rxjs';
 import { Round } from '@interfaces/rounds/round.interface';
 import { ApiService } from './abstracts/api.service';
@@ -62,7 +64,10 @@ export class RoundService {
   }
 
   public getNextRound(): Observable<Round> {
+    if (this.subInterval) return EMPTY;
+    
     return this.authService.user$.pipe(
+      debounceTime(1000),
       switchMap((user) => {
         if (user?.id) {
           let salt = new Date().getTime();
@@ -92,7 +97,6 @@ export class RoundService {
       (endTime.getTime() - currentTime.getTime()) / 1000
     );
 
-    console.log('dif in seconds: ', diffInSeconds);
     if (!this.subInterval)
       this.subInterval = interval(1000)
         .pipe(takeUntil(this.stopSignal$))
@@ -106,7 +110,9 @@ export class RoundService {
           console.log(diffInSeconds);
 
           if (diffInSeconds <= 0) {
+            this.stopSignal$.next();
             this.resetInterval();
+            this.requestNextRound();
             return;
           }
         });
@@ -116,12 +122,10 @@ export class RoundService {
     this.fetchNextRoundTrigger.next();
   }
 
-  private resetInterval(): void {
-    this.stopSignal$.next();
+  public resetInterval(): void {
     if (this.subInterval) {
       this.subInterval.unsubscribe();
       this.subInterval = undefined;
     }
-    this.requestNextRound();
   }
 }

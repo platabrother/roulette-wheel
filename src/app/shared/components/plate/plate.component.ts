@@ -39,7 +39,7 @@ export class PlateComponent implements AfterViewInit {
     this.innerAnimation?.play();
     //const finalLap: number = this.generateRandomLaps(1, 5);
 
-    const finalLap: number = 10;
+    const finalLap: number = 7;
     const targetLaps: number =
       this.result < this.rouletteNumb ? finalLap + 1 : finalLap;
     let lap: number = 0;
