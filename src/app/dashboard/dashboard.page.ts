@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   OnDestroy,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { PlateComponent } from '@components/plate/plate.component';
