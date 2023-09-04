@@ -2,3 +2,13 @@ b {
   color: gold;
   font-weight: bolder;
 }
+
+.win-container {
+  border: 1px solid #ccc !important;
+  padding: 20px;
+  border-radius: 5px !important;
+
+  -webkit-box-shadow: 15px 0px 10px -10px rgba(0, 0, 0, 0.51);
+  -moz-box-shadow: 15px 0px 10px -10px rgba(0, 0, 0, 0.51);
+  box-shadow: 15px 0px 10px -10px rgba(0, 0, 0, 0.51);
+}

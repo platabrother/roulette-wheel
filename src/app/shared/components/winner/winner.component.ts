@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { RoundService } from '@services/round.service';
 import { Subscription } from 'rxjs';
 @Component({
@@ -13,11 +14,17 @@ export class WinnerComponent implements OnInit, OnDestroy {
   public countdown!: number;
   public nextRoundWinner!: string | undefined;
 
-  constructor(private readonly roundService: RoundService) {}
+  constructor(
+    private readonly roundService: RoundService,
+    private readonly modalCtrl: ModalController
+  ) {}
 
   ngOnInit(): void {
     this.subCountdown = this.roundService.countdown$.subscribe(
-      (value: number) => (this.countdown = value)
+      (value: number) => {
+        if (value) this.countdown = value;
+        else this.modalCtrl.dismiss();
+      }
     );
 
     this.subNextRound = this.roundService.nextRound$.subscribe(

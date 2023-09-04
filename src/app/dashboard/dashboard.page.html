@@ -3,7 +3,7 @@
     <div
       class="col d-flex flex-grow-1 justify-content-center align-items-center"
     >
-      <app-plate #plate (isRoundEnded)="isRoundEnded($event)">
+      <app-plate #plate (roundCompleted)="onRoundCompleted()">
         <app-ball #ball></app-ball>
       </app-plate>
     </div>
@@ -12,8 +12,5 @@
     >
       <app-results></app-results>
     </div>
-  </div>
-  <div class="row fadein" *ngIf="showWinner">
-    <app-winner></app-winner>
   </div>
 </div>

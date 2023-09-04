@@ -26,7 +26,7 @@ export class PlateComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mask') mask!: ElementRef;
   @ViewChild('plate') plate!: ElementRef;
 
-  @Output() isRoundEnded: EventEmitter<boolean> = new EventEmitter();
+  @Output() roundCompleted: EventEmitter<void> = new EventEmitter();
 
   private subNextRound!: Subscription;
 
@@ -55,7 +55,6 @@ export class PlateComponent implements AfterViewInit, OnDestroy {
   }
 
   public onPlay(): void {
-    this.isRoundEnded.emit(false);
     this.innerAnimation?.play();
     //const finalLap: number = this.generateRandomLaps(1, 5);
 
@@ -88,7 +87,7 @@ export class PlateComponent implements AfterViewInit, OnDestroy {
     clearInterval(this.interval);
     this.interval = undefined;
 
-    this.isRoundEnded.emit(true);
+    this.roundCompleted.emit();
   }
 
   public onReset(): void {

@@ -4,6 +4,8 @@ import { BallComponent } from '@components/ball/ball.component';
 import { RoundService } from '@services/round.service';
 import { Subscription, debounceTime, filter } from 'rxjs';
 import { Round } from '@interfaces/rounds/round.interface';
+import { ModalController } from '@ionic/angular';
+import { WinnerComponent } from '@components/winner/winner.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,9 +21,10 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
 
   private countDown!: number;
 
-  public showWinner: boolean = false;
-
-  constructor(private readonly roundService: RoundService) {}
+  constructor(
+    private readonly modalCtrl: ModalController,
+    private readonly roundService: RoundService
+  ) {}
 
   ngAfterViewInit(): void {
     this.roundService.requestNextRound();
@@ -43,8 +46,15 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
       });
   }
 
-  public isRoundEnded(res: boolean): void {
-    this.showWinner = res;
+  public async onRoundCompleted(): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: WinnerComponent,
+      showBackdrop: true,
+      animated: true,
+      backdropDismiss: false,
+    });
+
+    modal.present();
   }
 
   private onCountdownSubscription(res: number): void {
