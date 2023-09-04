@@ -8,6 +8,7 @@ import {
   switchMap,
   EMPTY,
   debounceTime,
+  map,
 } from 'rxjs';
 import { Round } from '@interfaces/rounds/round.interface';
 import { ApiService } from './abstracts/api.service';
@@ -74,10 +75,14 @@ export class RoundService {
             salt,
           };
 
-          return this.apiServiceNextRound.getData(
-            API_KEY_CONNECTION.GET_NEXTROUND,
-            params
-          );
+          return this.apiServiceNextRound
+            .getData(API_KEY_CONNECTION.GET_NEXTROUND, params)
+            .pipe(
+              map((res) => {
+                if (res?.winner === null) res.winner = this.generateRandomValue();
+                return res;
+              })
+            );
         }
         return EMPTY;
       })
@@ -123,5 +128,9 @@ export class RoundService {
       this.subInterval.unsubscribe();
       this.subInterval = undefined;
     }
+  }
+
+  private generateRandomValue(): string {
+    return Math.floor(0 + Math.random() * (36 - 0 + 1)).toString();
   }
 }

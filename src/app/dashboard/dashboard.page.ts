@@ -1,9 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { PlateComponent } from '@components/plate/plate.component';
 import { BallComponent } from '@components/ball/ball.component';
 import { RoundService } from '@services/round.service';
@@ -23,6 +18,8 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
   private subNextRound!: Subscription;
 
   private countDown!: number;
+
+  public showWinner: boolean = false;
 
   constructor(private readonly roundService: RoundService) {}
 
@@ -44,6 +41,10 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
         this.plate.onReset();
         this.plate.onPlay();
       });
+  }
+
+  public isRoundEnded(res: boolean): void {
+    this.showWinner = res;
   }
 
   private onCountdownSubscription(res: number): void {
