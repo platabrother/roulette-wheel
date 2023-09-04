@@ -103,9 +103,7 @@ export class RoundService {
           diffInSeconds = Math.floor(
             (endTime.getTime() - currentTime.getTime()) / 1000
           );
-
           this.countdownSubject.next(diffInSeconds);
-          console.log(diffInSeconds);
 
           if (diffInSeconds <= 0) {
             this.stopSignal$.next();
