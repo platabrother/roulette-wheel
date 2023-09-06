@@ -3,6 +3,6 @@
     <b>GANADOR {{ nextRoundWinner || "¿?" }}</b>
   </h1>
   <h1 class="w-100 text-center text-white">
-    Faltan <b>{{ countdown || "..." }} segundos</b> para la próxima ronda
+    Faltan <b>{{ countdown | chronoformat}}</b> para la próxima ronda
   </h1>
 </div>
