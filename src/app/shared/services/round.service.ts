@@ -29,6 +29,8 @@ export class RoundService {
   public countdown$: Observable<number> = this.countdownSubject.asObservable();
   private fetchNextRoundTrigger = new Subject<void>();
 
+  private _numberWinner!: string | undefined;
+
   constructor(
     private readonly authService: AuthService,
     private readonly apiServiceLastRound: ApiService<Round[]>,
@@ -52,10 +54,17 @@ export class RoundService {
             limit: 10,
             salt,
           };
-          return this.apiServiceLastRound.getData(
-            API_KEY_CONNECTION.GET_LASTROUND,
-            params
-          );
+          return this.apiServiceLastRound
+            .getData(API_KEY_CONNECTION.GET_LASTROUND, params)
+            .pipe(
+              map((res: Round[]) => {
+                  this._numberWinner = '';
+                  this._numberWinner = res?.find(
+                    (round) => round.winner
+                  )?.winner;
+                return res;
+              })
+            );
         }
         return EMPTY;
       })
@@ -79,7 +88,9 @@ export class RoundService {
             .getData(API_KEY_CONNECTION.GET_NEXTROUND, params)
             .pipe(
               map((res) => {
-                if (res?.winner === null) res.winner = this.generateRandomValue();
+                if (res?.winner === null) {
+                  if (this._numberWinner) res.winner = this._numberWinner;
+                }
                 return res;
               })
             );
@@ -128,9 +139,5 @@ export class RoundService {
       this.subInterval.unsubscribe();
       this.subInterval = undefined;
     }
-  }
-
-  private generateRandomValue(): string {
-    return Math.floor(0 + Math.random() * (36 - 0 + 1)).toString();
   }
 }

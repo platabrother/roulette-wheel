@@ -21,9 +21,10 @@ export class ResultsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subRounds = this.getLastRounds().subscribe(
+     this.subRounds = this.getLastRounds().subscribe(
       (res) => (this.rounds = res)
-    );
+    ); 
+    
 
     this.subCountdown = this.roundService.countdown$.subscribe((res: number) =>
       this.onSubCountdown(res)

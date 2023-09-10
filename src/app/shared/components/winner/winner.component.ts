@@ -27,8 +27,8 @@ export class WinnerComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subNextRound = this.roundService.nextRound$.subscribe(
-      (res) => (this.nextRoundWinner = res?.winner)
+    this.subNextRound = this.roundService.getLastRounds().subscribe(
+      (res) => (this.nextRoundWinner = res?.find((round) => round.winner)?.winner)
     );
   }
 
