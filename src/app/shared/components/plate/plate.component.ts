@@ -12,7 +12,7 @@ import { AnimationService } from '@services/animation.service';
 import { NUMBERS, RED_NUMBERS, ROULETTE_VEL } from '@constants/constants';
 
 import { interval, Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { RoundService } from '@services/round.service';
 
 @Component({
@@ -48,15 +48,22 @@ export class PlateComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit(): void {
-    this.subNextRound = this.roundService.nextRound$.subscribe(
-      (res) => (this.result = parseFloat(res?.winner || ''))
-    );
+    this.onSubNextRound();
     this.innerAnimation = this.animService.createRotateAnimation(this.inner);
   }
 
+  private onSubNextRound(): void {
+    this.subNextRound = this.roundService.getLastRounds().subscribe((res) => {
+      const winner: string | undefined = res?.find(
+        (round) => round.winner
+      )?.winner;
+      if (winner) this.result = parseFloat(winner);
+    });
+  }
+
   public onPlay(): void {
+    this.onSubNextRound();
     this.innerAnimation?.play();
-    //const finalLap: number = this.generateRandomLaps(1, 5);
 
     const finalLap: number = 6;
     const targetLaps: number =
@@ -97,13 +104,6 @@ export class PlateComponent implements AfterViewInit, OnDestroy {
     this.interval = undefined;
 
     this.rouletteNumb = 0;
-  }
-
-  private generateRandomLaps(min: number, max: number): number {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-
-    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   ngOnDestroy(): void {
