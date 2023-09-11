@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Color } from '@interfaces/result.interface';
 import { Round } from '@interfaces/rounds/round.interface';
 import { RoundService } from '@services/round.service';
-import { Observable, Subscription, debounceTime, map } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 
 @Component({
   selector: 'app-results',
@@ -21,10 +21,9 @@ export class ResultsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-     this.subRounds = this.getLastRounds().subscribe(
-      (res) => (this.rounds = res)
-    ); 
-    
+    this.subRounds = this.getLastRounds().subscribe((res) => {
+      this.rounds = res;
+    });
 
     this.subCountdown = this.roundService.countdown$.subscribe((res: number) =>
       this.onSubCountdown(res)
@@ -35,8 +34,8 @@ export class ResultsComponent implements OnInit, OnDestroy {
     if (res <= 0) {
       setTimeout(() => {
         this.subRounds.unsubscribe();
-        this.subRounds = this.getLastRounds().subscribe((res) => {
-          this.rounds = res;
+        this.subRounds = this.getLastRounds().subscribe((response) => {
+          this.rounds = response;
           this.cdr.detectChanges();
         });
       }, 3000);
@@ -44,13 +43,13 @@ export class ResultsComponent implements OnInit, OnDestroy {
   }
 
   private getLastRounds(): Observable<Round[]> {
-    return this.roundService
-      .getLastRounds()
-      .pipe(
-        map((rounds: Round[]) =>
-          rounds.map((round: Round) => this.setRoundColor(round))
-        )
-      );
+    return this.roundService.getLastRounds().pipe(
+      map((rounds: Round[]) => {
+        rounds.shift();
+        rounds.map((round: Round) => this.setRoundColor(round));
+        return rounds;
+      })
+    );
   }
 
   private setRoundColor(round: Round): Round {
