@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let round of rounds | limitResult : 10">
+      <tr *ngFor="let round of rounds$ | async">
         <td class="color-{{ round.color }}">
           {{ round?.closeTime | date : "EEEE, h:mm a" }}
         </td>

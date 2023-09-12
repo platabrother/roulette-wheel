@@ -21,6 +21,8 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
 
   private countDown!: number;
 
+  public showWinnerResults: boolean = false;
+
   constructor(
     private readonly modalCtrl: ModalController,
     private readonly roundService: RoundService
@@ -41,12 +43,16 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
       .subscribe(() => {
         if (this.countDown <= 30) return;
 
+        this.showWinnerResults = false;
+
         this.plate.onReset();
         this.plate.onPlay();
       });
   }
 
   public async onRoundCompleted(): Promise<void> {
+    this.showWinnerResults = true;
+
     const modal = await this.modalCtrl.create({
       component: WinnerComponent,
       showBackdrop: true,

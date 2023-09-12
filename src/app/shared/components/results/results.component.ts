@@ -1,8 +1,14 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { Color } from '@interfaces/result.interface';
 import { Round } from '@interfaces/rounds/round.interface';
 import { RoundService } from '@services/round.service';
-import { Observable, Subscription, map } from 'rxjs';
+import { Observable, Subject, Subscription, map } from 'rxjs';
 
 @Component({
   selector: 'app-results',
@@ -11,17 +17,27 @@ import { Observable, Subscription, map } from 'rxjs';
 })
 export class ResultsComponent implements OnInit, OnDestroy {
   private subCountdown!: Subscription;
-  public subRounds!: Subscription;
+  private subRounds!: Subscription;
 
-  public rounds!: Round[];
+  private winner!: Round;
+  private rounds!: Round[];
 
-  constructor(
-    private readonly cdr: ChangeDetectorRef,
-    private readonly roundService: RoundService
-  ) {}
+  private bsRound: Subject<Round[]> = new Subject();
+  public rounds$: Observable<Round[]> = this.bsRound.asObservable();
+
+  @Input() set showWinnerResult(showWinner: boolean) {
+    if (showWinner) {
+      this.rounds.unshift(this.winner);
+      this.rounds.pop();
+      this.bsRound.next(this.rounds);
+    }
+  }
+
+  constructor(private readonly roundService: RoundService) {}
 
   ngOnInit(): void {
     this.subRounds = this.getLastRounds().subscribe((res) => {
+      this.bsRound.next(res);
       this.rounds = res;
     });
 
@@ -35,8 +51,8 @@ export class ResultsComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.subRounds.unsubscribe();
         this.subRounds = this.getLastRounds().subscribe((response) => {
+          this.bsRound.next(response);
           this.rounds = response;
-          this.cdr.detectChanges();
         });
       }, 3000);
     }
@@ -45,7 +61,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
   private getLastRounds(): Observable<Round[]> {
     return this.roundService.getLastRounds().pipe(
       map((rounds: Round[]) => {
-        rounds.shift();
+        this.winner = this.setRoundColor(rounds.shift() as Round);
         rounds.map((round: Round) => this.setRoundColor(round));
         return rounds;
       })
