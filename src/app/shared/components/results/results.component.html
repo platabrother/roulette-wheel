@@ -1,5 +1,5 @@
 <div>
-  <h1 class="text-end text-white">Histórico</h1>
+  <h1 class="text-center text-white">HISTÓRICO</h1>
   <table class="table table-hover text-center">
     <thead>
       <tr>
@@ -10,7 +10,7 @@
     <tbody>
       <tr *ngFor="let round of rounds$ | async">
         <td class="color-{{ round.color }}">
-          {{ round?.closeTime | date : "EEEE, h:mm a" }}
+          {{ round?.closeTime | date : "h:mm a" }}
         </td>
         <td class="color-{{ round.color }}">
           {{ round?.winner }}
