@@ -9,10 +9,10 @@ import {
 } from '@angular/core';
 import { Animation } from '@ionic/angular';
 import { AnimationService } from '@services/animation.service';
-import { NUMBERS, RED_NUMBERS, ROULETTE_VEL } from '@constants/constants';
+import { NUMBERS, ROULETTE_VEL } from '@constants/constants';
 
 import { interval, Subject, Subscription } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { RoundService } from '@services/round.service';
 
 @Component({
@@ -32,15 +32,14 @@ export class PlateComponent implements AfterViewInit, OnDestroy {
 
   private stopSignal$ = new Subject<void>();
   private result!: number;
-  public rouletteNumb: number = 36;
 
   public maskText!: string;
   public resultColor!: string;
   private innerAnimation!: Animation;
   private interval: any;
 
-  public red: number[] = RED_NUMBERS;
   public numbers: number[] = NUMBERS;
+  public rouletteNumb: number = NUMBERS[0];
 
   constructor(
     private readonly animService: AnimationService,
@@ -69,6 +68,7 @@ export class PlateComponent implements AfterViewInit, OnDestroy {
     const targetLaps: number =
       this.result < this.rouletteNumb ? finalLap + 1 : finalLap;
     let lap: number = 0;
+    let index: number = 0;
 
     if (!this.interval) {
       this.interval = interval(ROULETTE_VEL / 36)
@@ -77,11 +77,12 @@ export class PlateComponent implements AfterViewInit, OnDestroy {
           if (this.rouletteNumb === this.result && lap >= targetLaps) {
             this.onPause();
           } else {
-            if (this.rouletteNumb === 36) {
+            if (index === NUMBERS.length - 1) {
               lap++;
-              this.rouletteNumb = 0;
+              index = 0;
             }
-            this.rouletteNumb = ++this.rouletteNumb;
+            this.rouletteNumb = NUMBERS[index];
+            index++;
           }
         });
     }

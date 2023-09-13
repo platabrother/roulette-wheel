@@ -1,10 +1,10 @@
 import {
-  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { NUMBERS } from '@constants/constants';
 import { Color } from '@interfaces/result.interface';
 import { Round } from '@interfaces/rounds/round.interface';
 import { RoundService } from '@services/round.service';
@@ -69,13 +69,17 @@ export class ResultsComponent implements OnInit, OnDestroy {
   }
 
   private setRoundColor(round: Round): Round {
-    // par number
-    if (this.isEven(+round?.winner)) round.color = Color.R;
+    const index: number = NUMBERS.findIndex(
+      (n: number) => n === parseFloat(round.winner)
+    );
+
+    // par index
+    if (this.isEven(index)) round.color = Color.R;
     // no par number
     else round.color = Color.B;
 
-    // number 36
-    if (+round.winner === 36) round.color = Color.G;
+    // number 0
+    if (+round.winner === 0) round.color = Color.G;
     return round;
   }
 
