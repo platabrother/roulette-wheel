@@ -41,7 +41,11 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
         filter((res: Round | null) => !!res)
       )
       .subscribe(() => {
-        if (this.countDown <= 30) return;
+        if (this.countDown <= 30) {
+          if (this.showWinnerResults) return;
+          this.onRoundCompleted();
+          return;
+        }
 
         this.showWinnerResults = false;
 
