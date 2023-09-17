@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Animation } from '@ionic/angular';
 import { AnimationService } from '@services/animation.service';
-import { NUMBERS, ROULETTE_VEL } from '@constants/constants';
+import { DIAMONDS_AND_DOTS, NUMBERS, ROULETTE_VEL } from '@constants/constants';
 
 import { interval, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -40,6 +40,8 @@ export class PlateComponent implements AfterViewInit, OnDestroy {
 
   public numbers: number[] = NUMBERS;
   public rouletteNumb: number = NUMBERS[0];
+  public diamonds: number[] = DIAMONDS_AND_DOTS;
+  public dots: number[] = DIAMONDS_AND_DOTS;
 
   constructor(
     private readonly animService: AnimationService,

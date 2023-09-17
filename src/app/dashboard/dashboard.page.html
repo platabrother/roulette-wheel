@@ -1,16 +1,23 @@
 <div class="main fade-in pt-5 mt-5">
-  <div class="row">
-    <div
-      class="col d-flex flex-grow-1 justify-content-center align-items-center"
-    >
-      <app-plate #plate (roundCompleted)="onRoundCompleted()">
-        <app-ball #ball></app-ball>
-      </app-plate>
-    </div>
-    <div
-      class="col d-flex flex-grow-1 justify-content-center align-items-center"
-    >
-      <app-results [showWinnerResult]="showWinnerResults"></app-results>
+  <br /><br /><br /><br />
+  <div class="table-container">
+    <div class="linea"></div>
+    <div class="linea"></div>
+    <div class="linea"></div>
+    <div class="row">
+      <img src="assets/poker.png" alt="" class="poker-image" />
+      <div
+        class="col d-flex flex-grow-1 justify-content-center align-items-center"
+      >
+        <app-plate #plate (roundCompleted)="onRoundCompleted()">
+          <app-ball #ball></app-ball>
+        </app-plate>
+      </div>
+      <div
+        class="col d-flex flex-grow-1 justify-content-center align-items-center"
+      >
+        <app-results [showWinnerResult]="showWinnerResults"></app-results>
+      </div>
     </div>
   </div>
 </div>

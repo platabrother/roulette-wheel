@@ -1,3 +1,71 @@
 .main {
   height: 100%;
 }
+.poker-image{
+  height: 300px;
+  width: 280px;
+  position: absolute;
+  top: 62%;
+  left: -12%;
+  rotate: -10deg;
+  z-index: 10;
+}
+
+.table-container {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #715a08 44%,
+    #705802 51%,
+    #423701f6 100%
+  );
+  border-radius: 15px;
+  padding: 20px;
+  margin: auto;
+  width: 70%;
+  border-left: inset 0.1em rgba(171, 104, 3, 0.733);
+  border-bottom: solid 0.3em rgba(49, 33, 1, 0.899);
+  border-right: solid 0.1em rgb(123, 79, 2);
+}
+
+.table-container:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 15px;
+  box-shadow: 0 0 200px #f0e130;
+  opacity: 0.5;
+  z-index: 1;
+  border-bottom: solid 0.3em rgba(103, 81, 1, 0.826);
+  border-right: solid 0.3em rgb(72, 46, 2);
+}
+
+.linea {
+  position: absolute;
+  height: 2px;
+  background-color: rgba(108, 73, 2, 0.205);
+  z-index: 0;
+}
+
+.linea:nth-child(1) {
+  width: 40%;
+  top: 20%;
+  left: 20%;
+}
+
+.linea:nth-child(2) {
+  width: 30%;
+  top: 40%;
+  left: 25%;
+}
+
+.linea:nth-child(3) {
+  width: 30%;
+  top: 60%;
+  left: 20%;
+}
