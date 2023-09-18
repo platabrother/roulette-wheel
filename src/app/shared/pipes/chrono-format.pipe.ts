@@ -9,9 +9,12 @@ export class ChronoFormatPipe implements PipeTransform {
 
     value = parseFloat(value.toString());
 
-    const min: number = Math.floor(value / 60);
-    const sec: number = value % 60;
+    let min: string = Math.floor(value / 60).toString();
+    let sec: string = (value % 60).toString();
 
-    return `${min}min ${sec}sec`;
+    if (+min < 10) min = `0${min}`;
+    if (+sec < 10) min = `0${min}`;
+
+    return `${min}:${sec}`;
   }
 }
