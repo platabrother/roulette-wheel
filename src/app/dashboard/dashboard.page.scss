@@ -1,3 +1,9 @@
+$to: 0;
+$to-two: 0;
+$rotate: calc(360 / $to) + 0deg;
+$rotate-two: calc(360 / $to-two) + 0deg;
+
+
 .main {
   height: 100%;
 }
@@ -9,6 +15,45 @@
   left: -12%;
   rotate: -10deg;
   z-index: 10;
+}
+
+.coin-image-bottom{
+  height: 80%;
+  width: 65%;
+  position: absolute;
+  top: 62%;
+  left: 0%;
+  z-index: 0;
+}
+
+.coin-image-medium{
+  height: 50%;
+  width: 40%;
+  position: absolute;
+  top: 19%;
+  right: 9.5%;
+  z-index: 0;
+}
+
+.mix-symbol-image-top-one{
+  height: 30%;
+  width: 15%;
+  position: absolute;
+  top: 20%;
+  left: 15.3%;
+  z-index: 1;
+  transform: scaleX(-1); 
+  transform: rotateZ($rotate);
+}
+.mix-symbol-image-top-two{
+  height: 25%;
+  width: 15%;
+  position: absolute;
+  top: 36%;
+  left: 14.9%;
+  z-index: 1;
+  transform: scaleX(-1); 
+  transform: rotateZ($rotate-two);
 }
 
 .table-container {
@@ -40,7 +85,7 @@
   border-radius: 15px;
   box-shadow: 0 0 200px #f0e130;
   opacity: 0.5;
-  z-index: 1;
+  z-index: 0;
   border-bottom: solid 0.3em rgba(103, 81, 1, 0.826);
   border-right: solid 0.3em rgb(72, 46, 2);
 }

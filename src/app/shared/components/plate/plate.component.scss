@@ -32,6 +32,7 @@ $diamanteSize: $platesize-for-diamonds;
   margin: $rimsize * 2;
   border-radius: 50%;
   position: relative;
+  z-index: 10;
 
   &:after,
   &:before {
@@ -49,6 +50,7 @@ $diamanteSize: $platesize-for-diamonds;
     border: $rimsize solid $trim;
     box-shadow: inset 0px 0px 0px calc($rimsize/3) darken($trim, 50%),
       0px 0px 0px calc($rimsize/3) lighten(rgb(30, 29, 29), 25%);
+      z-index: 10;
   }
 
   &:before {
@@ -77,6 +79,7 @@ $diamanteSize: $platesize-for-diamonds;
   border-radius: 50%;
   position: relative;
   border: 2px solid $trim;
+  z-index: 10;
 }
 
 .plate-brown {
