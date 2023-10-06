@@ -20,8 +20,7 @@ export class RoundService {
   private roundSubject: BehaviorSubject<Round | any> = new BehaviorSubject(
     undefined
   );
-  public nextRound$: Observable<Round | null> =
-    this.roundSubject.asObservable();
+  public nextRound$: Observable<Round> = this.roundSubject.asObservable();
 
   private stopSignal$ = new Subject<void>();
   private subInterval!: any;
@@ -58,10 +57,8 @@ export class RoundService {
             .getData(API_KEY_CONNECTION.GET_LASTROUND, params)
             .pipe(
               map((res: Round[]) => {
-                  this._numberWinner = '';
-                  this._numberWinner = res?.find(
-                    (round) => round.winner
-                  )?.winner;
+                this._numberWinner = '';
+                this._numberWinner = res?.find((round) => round.winner)?.winner;
                 return res;
               })
             );

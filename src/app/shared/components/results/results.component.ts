@@ -1,10 +1,6 @@
-import {
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import { NUMBERS } from '@constants/constants';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { CELLS } from '@constants/constants';
+import { Cell } from '@interfaces/cell.interface';
 import { Color } from '@interfaces/result.interface';
 import { Round } from '@interfaces/rounds/round.interface';
 import { RoundService } from '@services/round.service';
@@ -69,22 +65,11 @@ export class ResultsComponent implements OnInit, OnDestroy {
   }
 
   private setRoundColor(round: Round): Round {
-    const index: number = NUMBERS.findIndex(
-      (n: number) => n === parseFloat(round.winner)
-    );
-
-    // par index
-    if (this.isEven(index)) round.color = Color.R;
-    // no par number
-    else round.color = Color.B;
-
-    // number 0
-    if (+round.winner === 0) round.color = Color.G;
+    const color: Color =
+      CELLS.find((cell: Cell) => cell.value === +round.winner)?.background ||
+      Color.B;
+    round.color = color;
     return round;
-  }
-
-  private isEven(n: number): boolean {
-    return n % 2 === 0;
   }
 
   ngOnDestroy(): void {
