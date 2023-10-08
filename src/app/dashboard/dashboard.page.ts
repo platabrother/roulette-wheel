@@ -5,7 +5,6 @@ import { Round } from '@interfaces/rounds/round.interface';
 import { ModalController } from '@ionic/angular';
 import { WinnerComponent } from '@components/winner/winner.component';
 import { BetService } from '@services/roulette/bet.service';
-import { SpinRouletteService } from '@services/roulette/spin-roulette.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -47,7 +46,6 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
         }
 
         this.showWinnerResults = false;
-        console.log(round);
         this.betService.spin(round);
       });
   }

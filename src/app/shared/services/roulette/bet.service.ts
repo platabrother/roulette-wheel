@@ -18,9 +18,7 @@ export class BetService {
     if (!round) return;
 
     if (!this.canIBet) {
-      const cell = CELLS.find(
-        (cell: Cell) => cell.value.toString() === round.winner
-      );
+      const cell = CELLS.find((cell: Cell) => cell.value === +round.winner);
       this.spinRouletteService.setDegrees(cell);
       this.spins = true;
       this.isDisabled = true;
