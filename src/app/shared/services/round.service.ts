@@ -17,9 +17,7 @@ import { AuthService } from './auth/auth.service';
 
 @Injectable()
 export class RoundService {
-  private roundSubject: BehaviorSubject<Round | any> = new BehaviorSubject(
-    undefined
-  );
+  private roundSubject: Subject<Round | any> = new Subject();
   public nextRound$: Observable<Round> = this.roundSubject.asObservable();
 
   private stopSignal$ = new Subject<void>();
@@ -98,7 +96,7 @@ export class RoundService {
   }
 
   public clearNextRound(value: Round | undefined = undefined): void {
-    this.roundSubject.next(value);
+    this.roundSubject.next({ ...value });
   }
 
   public calcCountdown(time: string): void {

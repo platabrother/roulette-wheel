@@ -46,7 +46,7 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
         }
 
         this.showWinnerResults = false;
-        this.betService.spin(round);
+        this.betService.spin({ ...round });
       });
   }
 

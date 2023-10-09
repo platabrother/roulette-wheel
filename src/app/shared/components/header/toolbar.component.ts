@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Round } from '@interfaces/rounds/round.interface';
 import { AuthService } from '@services/auth/auth.service';
 import { RoundService } from '@services/round.service';
+import { filter } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -24,9 +25,11 @@ export class ToolbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.roundService.nextRound$.subscribe((res) => {
-      this.nextRound = res;
-    });
+    this.roundService.nextRound$
+      .pipe(filter((res) => !!res))
+      .subscribe((res) => {
+        this.nextRound = { ...res };
+      });
 
     this.router.events.subscribe((res) => {
       if (res instanceof NavigationEnd) {
