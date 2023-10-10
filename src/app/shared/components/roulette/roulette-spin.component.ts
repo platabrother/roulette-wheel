@@ -34,6 +34,7 @@ import { SpinRouletteService } from '@services/roulette/spin-roulette.service';
 })
 export class RouletteSpinComponent implements OnInit {
   state: any = 'start';
+
   constructor(public spinRouletteService: SpinRouletteService) {
     this.spinRouletteService.state.subscribe((value) => {
       setTimeout(() => (this.state = value), 12);

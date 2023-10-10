@@ -6,6 +6,7 @@ import { Round } from '@interfaces/rounds/round.interface';
 })
 export class LimitResultPipe implements PipeTransform {
   transform(value: Round[] | null, limit: number): Round[] | null {
+    value = JSON.parse(JSON.stringify(value)) as Round[];
     if (value === null || value === undefined) {
       return null;
     }

@@ -12,7 +12,7 @@ export class BetService {
   isDisabled: boolean = false;
   spins: boolean = false;
 
-  constructor(private spinRouletteService: SpinRouletteService) {}
+  constructor(private readonly spinRouletteService: SpinRouletteService) {}
 
   spin(round?: Round | null) {
     if (!round) return;

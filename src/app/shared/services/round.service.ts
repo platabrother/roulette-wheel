@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-  BehaviorSubject,
   Observable,
   Subject,
   interval,
@@ -18,14 +17,16 @@ import { AuthService } from './auth/auth.service';
 @Injectable()
 export class RoundService {
   private roundSubject: Subject<Round | any> = new Subject();
-  public nextRound$: Observable<Round> = this.roundSubject.asObservable();
-
-  private stopSignal$ = new Subject<void>();
-  private subInterval!: any;
+  private roundListSubject: Subject<Round[]> = new Subject();
+  private stopSignal: Subject<void> = new Subject<void>();
   private countdownSubject: Subject<number> = new Subject();
-  public countdown$: Observable<number> = this.countdownSubject.asObservable();
   private fetchNextRoundTrigger = new Subject<void>();
 
+  public nextRound$: Observable<Round> = this.roundSubject.asObservable();
+  public roundList$: Observable<Round[]> = this.roundListSubject.asObservable();
+  public countdown$: Observable<number> = this.countdownSubject.asObservable();
+
+  private subInterval!: any;
   private _numberWinner!: string | undefined;
 
   constructor(
@@ -57,6 +58,9 @@ export class RoundService {
               map((res: Round[]) => {
                 this._numberWinner = '';
                 this._numberWinner = res?.find((round) => round.winner)?.winner;
+
+                this.roundListSubject.next(res);
+
                 return res;
               })
             );
@@ -108,7 +112,7 @@ export class RoundService {
 
     if (!this.subInterval)
       this.subInterval = interval(1000)
-        .pipe(takeUntil(this.stopSignal$))
+        .pipe(takeUntil(this.stopSignal))
         .subscribe(() => {
           currentTime = new Date();
           diffInSeconds = Math.floor(
@@ -117,7 +121,7 @@ export class RoundService {
           this.countdownSubject.next(diffInSeconds);
 
           if (diffInSeconds <= 0) {
-            this.stopSignal$.next();
+            this.stopSignal.next();
             this.resetInterval();
             this.requestNextRound();
             return;
