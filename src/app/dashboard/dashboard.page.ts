@@ -1,6 +1,13 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { RoundService } from '@services/round.service';
-import { Subscription, distinctUntilChanged, map, skip } from 'rxjs';
+import {
+  Subscription,
+  distinctUntilChanged,
+  map,
+  skip,
+  debounceTime,
+  filter,
+} from 'rxjs';
 import { Round } from '@interfaces/rounds/round.interface';
 import { ModalController } from '@ionic/angular';
 import { WinnerComponent } from '@components/winner/winner.component';
@@ -14,11 +21,14 @@ import { BetService } from '@services/roulette/bet.service';
 export class DashboardPage implements AfterViewInit, OnDestroy {
   private subCountdown!: Subscription;
   private subLastRound!: Subscription;
+  private subNextRound!: Subscription;
 
-  private countDown!: number;
   private modal!: HTMLIonModalElement | undefined;
-
+  
   public showWinnerResults: boolean = false;
+  
+  private countDown!: number;
+  private _countNextRound = 0;
 
   constructor(
     private readonly modalCtrl: ModalController,
@@ -33,6 +43,11 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
       .pipe(skip(1))
       .subscribe((res) => this.onCountdownSubscription(res));
 
+    this._subscriptionGetLastRound();
+    this._subscriptionGetNextRound();
+  }
+
+  private _subscriptionGetLastRound(): void {
     this.subLastRound = this.roundService.roundList$
       .pipe(
         map((rounds: Round[]) => rounds[0]),
@@ -50,6 +65,20 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
 
         this.showWinnerResults = false;
         this.betService.spin({ ...lastRound });
+      });
+  }
+
+  private _subscriptionGetNextRound(): void {
+    this.subNextRound = this.roundService.nextRound$
+      .pipe(
+        debounceTime(1500),
+        filter((res: Round) => !!res)
+      )
+      .subscribe((round: Round) => {
+        this._countNextRound++;
+          if (this._countNextRound > 1) {
+            this._subscriptionGetLastRound();
+          }
       });
   }
 
@@ -84,6 +113,7 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.subCountdown.unsubscribe();
     this.subLastRound.unsubscribe();
+    this.subNextRound.unsubscribe();
     this.roundService.resetInterval();
   }
 }
