@@ -1,22 +1,22 @@
 <ion-toolbar>
   <div class="row mx-2 fw-bolder">
     <div class="col-3">
-      <button
-        *ngIf="!isLoginPage"
-        type="button"
-        class="btn"
-        (click)="logout()"
-      >
+      <button *ngIf="!isLoginPage" type="button" class="btn" (click)="logout()">
         <i class="bi bi-box-arrow-left"></i>
         SALIR
       </button>
-      <span *ngIf="isLoginPage">
+      <button class="btn pe-none" *ngIf="isLoginPage">
         {{ appName | titlecase }}
-      </span>
+      </button>
     </div>
-    <div class="col-6 text-center">{{ bettingHouseName }}</div>
-    <div class="col-3 text-white text-end" *ngIf="nextRound?.closeTime">
+    <button class="btn pe-none col-6 text-center">
+      {{ bettingHouseName }}
+    </button>
+    <button
+      class="btn pe-none col-3 text-white text-end"
+      *ngIf="nextRound?.closeTime && !isLoginPage"
+    >
       Siguiente ronda: {{ nextRound?.closeTime | date : "shortTime" }}
-    </div>
+    </button>
   </div>
 </ion-toolbar>

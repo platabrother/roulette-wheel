@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Round } from '@interfaces/rounds/round.interface';
 import { AuthService } from '@services/auth/auth.service';
 import { RoundService } from '@services/round.service';
-import { Subscription, map } from 'rxjs';
+import { Subscription, map, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['toolbar.component.scss'],
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
-  private subNextRound!: Subscription;
+  private subRoundList!: Subscription;
 
   public nextRound!: Round | null;
   public appName: string = environment.appName;
@@ -27,9 +27,11 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subNextRound = this.roundService.roundList$
+    this.subRoundList = this.roundService.roundList$
       .pipe(map((res: Round[]) => res[0]))
-      .subscribe((res: Round) => (this.nextRound = { ...res }));
+      .subscribe((res: Round) => {
+        this.nextRound = { ...res };
+      });
 
     this.router.events.subscribe((res) => {
       if (res instanceof NavigationEnd) {
@@ -46,6 +48,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subNextRound.unsubscribe();
+    this.subRoundList.unsubscribe();
   }
 }

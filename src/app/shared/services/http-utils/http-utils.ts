@@ -1,4 +1,3 @@
-
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
@@ -20,16 +19,18 @@ export class HttpUtils {
   public getApiMatched(url: string, params: any = {}): string {
     const queryParams = new URLSearchParams();
     for (const key in params) {
-        if (params.hasOwnProperty(key)) {
-            queryParams.set(key, params[key]);
-        }
+      if (params.hasOwnProperty(key)) {
+        queryParams.set(key, params[key]);
+      }
     }
     const queryString = queryParams.toString();
     if (queryString) {
-        url = url.includes('?') ? url + '&' + queryString : url + '?' + queryString;
+      url = url.includes('?')
+        ? url + '&' + queryString
+        : url + '?' + queryString;
     }
     return url;
-}
+  }
 
   public getApi(keyApi: string): ApiUrl {
     for (const [key, value] of Object.entries(APIS_URL)) {
@@ -52,49 +53,52 @@ export class HttpUtils {
   public deleteCacheItem(key: string): void {
     delete this.requestChached[key];
   }
-  
-  public get<T>(keyApi: string, params = {}, queryParams = {}, refresh?: boolean, useCache: boolean = true): Observable<T> {
+
+  public get<T>(
+    keyApi: string,
+    params = {},
+    queryParams = {},
+    refresh?: boolean,
+    useCache: boolean = true
+  ): Observable<T> {
     const api: ApiUrl = this.getApi(keyApi);
-  
+
     const originalParams = { ...params };
-  
+
     const apiKey = this.getApiMatched(api.path, params);
     if (refresh) {
-        console.log('BackOfficeRefresh', apiKey);
-        this.deleteCacheItem(apiKey);
-        return this.getAndSave(api, false);
+      this.deleteCacheItem(apiKey);
+      return this.getAndSave(api, false);
     }
     const observableCached = this.getCacheItem<T>(apiKey);
     if (useCache && observableCached) {
-        console.log('CHACHEADA', apiKey);
-        return observableCached;
+      return observableCached;
     }
-    console.log('BackOffice', apiKey);
     let url = this.addParamsToUrl(api.path, originalParams);
     url = this.addParamsToUrl(url, queryParams);
     return this.getAndSave({ path: url, server: api.server }, false);
   }
 
-
-private addParamsToUrl(url: string, params: any): string {
+  private addParamsToUrl(url: string, params: any): string {
     const queryParams = new URLSearchParams();
     for (const key in params) {
-        if (params.hasOwnProperty(key)) {
-            queryParams.set(key, params[key]);
-        }
+      if (params.hasOwnProperty(key)) {
+        queryParams.set(key, params[key]);
+      }
     }
     const queryString = queryParams.toString();
     if (queryString) {
-        url = url.includes('?') ? url + '&' + queryString : url + '?' + queryString;
+      url = url.includes('?')
+        ? url + '&' + queryString
+        : url + '?' + queryString;
     }
     return url;
-}
-  
+  }
+
   //   POST
   public post<T>(keyApi: string, params = {}, body = {}): Observable<T> {
     const api: ApiUrl = this.getApi(keyApi);
     const apiKey = this.getApiMatched(api.path, params);
-    console.log('BackOffice', apiKey);
     return this.postAndSave({ path: apiKey, server: api.server }, body);
   }
 
@@ -113,7 +117,9 @@ private addParamsToUrl(url: string, params: any): string {
   }
 
   private getCacheItem<T>(key: string): Observable<T> | null {
-    const cacheItem = this.requestChached[key] as TimestampObservableCache<T> | undefined;
+    const cacheItem = this.requestChached[key] as
+      | TimestampObservableCache<T>
+      | undefined;
     if (!cacheItem) {
       return null;
     }
@@ -127,7 +133,10 @@ private addParamsToUrl(url: string, params: any): string {
 
   private setCacheItem<T>(key: string, value: Observable<T>): void {
     const EXPIRES = Date.now() + (1000 * 60 * 60) / 2;
-    this.requestChached[key] = { expires: EXPIRES, observable: value } as TimestampObservableCache<T>;
+    this.requestChached[key] = {
+      expires: EXPIRES,
+      observable: value,
+    } as TimestampObservableCache<T>;
   }
 
   private postAndSave<T>(api: ApiUrl, body: any): Observable<T> {

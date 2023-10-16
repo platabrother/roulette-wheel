@@ -48,7 +48,7 @@ export class LoginPageComponent {
           }
         },
         error: (err) => {
-          console.log('There was an error: ', err);
+          console.error('There was an error: ', err);
           this._handleUnauthorized();
         },
       });

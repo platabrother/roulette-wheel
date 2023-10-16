@@ -7,6 +7,7 @@ import {
   skip,
   debounceTime,
   filter,
+  tap,
 } from 'rxjs';
 import { Round } from '@interfaces/rounds/round.interface';
 import { ModalController } from '@ionic/angular';
@@ -24,9 +25,9 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
   private subNextRound!: Subscription;
 
   private modal!: HTMLIonModalElement | undefined;
-  
+
   public showWinnerResults: boolean = false;
-  
+
   private countDown!: number;
   private _countNextRound = 0;
 
@@ -74,11 +75,11 @@ export class DashboardPage implements AfterViewInit, OnDestroy {
         debounceTime(1500),
         filter((res: Round) => !!res)
       )
-      .subscribe((round: Round) => {
+      .subscribe(() => {
         this._countNextRound++;
-          if (this._countNextRound > 1) {
-            this._subscriptionGetLastRound();
-          }
+        if (this._countNextRound > 1) {
+          this._subscriptionGetLastRound();
+        }
       });
   }
 

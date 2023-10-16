@@ -14,7 +14,9 @@ import { ApiService } from './abstracts/api.service';
 import { API_KEY_CONNECTION } from './http-utils/apis-url';
 import { AuthService } from './auth/auth.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class RoundService {
   private roundSubject: Subject<Round | any> = new Subject();
   private roundListSubject: Subject<Round[]> = new Subject();
